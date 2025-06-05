@@ -138,8 +138,8 @@ const dataStructures = [
 
 const DataStructuresSection: React.FC = () => {
   return (
-    <section className="section-outer">
-      <h2 className="text-heading-2 text-4xl mb-8 text-center fade-in">Data Structures</h2>
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <h2 className="text-heading-2 text-4xl mb-8 text-center fade-in py-8">Data Structures</h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {dataStructures.map((ds) => (
           <Card key={ds.title} {...ds} />
@@ -148,5 +148,6 @@ const DataStructuresSection: React.FC = () => {
     </section>
   );
 };
+
 
 export default DataStructuresSection;

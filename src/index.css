@@ -10,6 +10,7 @@
     --heading-3: 225 0% 30%;
     --heading-4: 225 0% 10%;
     --footer: 225 0% 100%;
+    --color-btn: 217 91% 60%;
 }
 
 @layer utilities {
@@ -72,16 +73,13 @@
       @apply py-20
     }
     .btn {
-      @apply py-2 px-8 rounded-full inline-flex items-center gap-2 relative overflow-hidden;
-      background-color: hsl(var(--color-box));
-      color: hsl(var(--heading-1));
+      @apply bg-blue-600 text-white py-2 px-8 rounded-full inline-flex items-center gap-2 relative overflow-hidden;
       border: 1.2px solid hsl(var(--box-border));
       box-shadow: 0 1px 2px 0 hsl(var(--box-shadow));
     }
     .btn:hover,
     .btn:focus-visible {
-      background-color: hsl(var(--heading-1));
-      color: hsl(var(--color-bg));
+      @apply bg-blue-700 text-white;
     }
 
     .form-input-style {

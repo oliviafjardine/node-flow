@@ -34,7 +34,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-footer py-6 mt-auto z-20 shadow-sm border-b border-gray-200">
-      <div className="w-full px-6 flex justify-between items-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <Link
           to="/"
           className="flex items-center gap-1 text-base font-semibold tracking-wide text-hero"
@@ -73,7 +73,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuVisible && (
         <div
-          className={`md:hidden fixed inset-0 z-40 bg-primary/10 backdrop-blur-3xl transition-opacity duration-300 ${
+          className={`md:hidden fixed inset-0 z-40 bg-white backdrop-blur-3xl transition-opacity duration-300 ${
             fadeIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
         >
