@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bg: 220 70% 95%;
+    --color-box: 225 0% 98%;
+    --box-border: 225 0% 90%;
+    --box-shadow: 225 0% 90% / 0.5;
+    --heading-1: 225 0% 10%;
+    --heading-2: 225 0% 90%;
+    --heading-3: 225 0% 60%;
+    --heading-4: 225 0% 50%;
+    --footer: 225 0% 100%;
+}
+
+@layer utilities {
+    .bg-body {
+        background-color: hsl(var(--color-bg));
+    }
+    .bg-box-bg {
+        background-color: hsl(var(--color-box));
+    }
+    .text-heading-1 {
+        color: hsl(var(--heading-1));
+    }
+
+    .text-heading-2 {
+        color: hsl(var(--heading-2));
+    }
+
+    .text-heading-3 {
+        color: hsl(var(--heading-3));
+    } 
+    .bg-footer {
+        background-color: hsl(var(--footer));
+    }
+
+  @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes fade-in-left {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .fade-in {
+      animation: fade-in 1s ease-out forwards;
+    }
+    .fade-in-left {
+      animation: fade-in-left 0.75s ease-out forwards;
+    }
+}
+
+/* ==== Components Layer: Reusable Classes ==== */
+@layer components {
+    .section-outer {
+      @apply mt-60 mb-20 mx-10; 
+    }
+    .box-padding {
+      @apply py-20
+    }
+    .btn {
+      @apply py-2 px-8 rounded-full inline-flex items-center gap-2 relative overflow-hidden;
+      background-color: hsl(var(--color-box));
+      color: hsl(var(--heading-1));
+      border: 1.2px solid hsl(var(--box-border));
+      box-shadow: 0 1px 2px 0 hsl(var(--box-shadow));
+    }
+    .btn:hover,
+    .btn:focus-visible {
+      background-color: hsl(var(--heading-1));
+      color: hsl(var(--color-bg));
+    }
+
+    .form-input-style {
+      @apply w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-2 text-sm placeholder:text-gray-300 placeholder:text-sm;
+    }
+}
+
+@layer utilities {
+    .underlink {
+      position: relative;
+      cursor: pointer;
+    }
+    .underlink::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 3px;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: all 0.3s;
+      transform: translateX(-50%);
+    }
+    .underlink:hover::after {
+      left: 50%;
+      width: 60%;
+      height: 1px;
+      transform: translateX(-50%);
+    }
+    .font-hero {
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
+      letter-spacing: -0.3em;
+      line-height: 0.9;
+      background-image: url('/src/assets/seattle.jpg');
+      background-size: cover;
+      background-position: center;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro Text",
+      "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  @apply text-lg;
+  font-weight: 300;
+}
+
+h1 {
+  @apply text-5xl mb-4 font-semibold;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+.social-icon {
+  @apply h-6 w-6 hover:opacity-75 transition duration-150;
+}
