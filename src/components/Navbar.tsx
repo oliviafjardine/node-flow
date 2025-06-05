@@ -33,7 +33,7 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev);
 
   return (
-    <nav className="bg-footer py-4 fixed top-0 left-0 w-full z-20 shadow-sm border-b border-gray-200">
+    <nav className="bg-footer py-6 mt-auto z-20 shadow-sm border-b border-gray-200">
       <div className="w-full px-6 flex justify-between items-center">
         <Link
           to="/"
@@ -51,7 +51,7 @@ const Navbar = () => {
               to={to}
               className={`transition-colors duration-300 ${
                 isCTA
-                  ? 'btn bg-box-bg text-heading-1 hover:bg-heading-3'
+                  ? 'btn bg-box text-heading-1 hover:bg-heading-3'
                   : 'underlink px-2 py-2 rounded-full text-hero hover:text-heading-1'
               }`}
             >
@@ -73,7 +73,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuVisible && (
         <div
-          className={`md:hidden fixed inset-0 z-40 bg-primary/10 backdrop-blur-2xl transition-opacity duration-300 ${
+          className={`md:hidden fixed inset-0 z-40 bg-primary/10 backdrop-blur-3xl transition-opacity duration-300 ${
             fadeIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
         >
@@ -85,7 +85,7 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`transition-colors duration-300 ${
                   isCTA
-                    ? 'btn text-lg bg-box-bg text-heading-1 hover:bg-heading-3'
+                    ? 'btn text-lg bg-box text-heading-1 hover:bg-heading-3'
                     : 'underlink text-lg px-6 py-2 rounded-full text-hero hover:text-heading-1'
                 }`}
               >

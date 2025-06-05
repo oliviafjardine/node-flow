@@ -29,8 +29,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <h5 className="uppercase font-semibold mb-2">Creator</h5>
             <ul className="space-y-2 text-sm">
-              <li>Seattle, WA</li>
-              <li>oliviajardine9@gmail.com</li>
+              <li>Olivia Jardine</li>
             </ul>
             
             <div className="flex space-x-3 mt-3 text-xl text-gray-600">

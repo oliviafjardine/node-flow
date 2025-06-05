@@ -6,9 +6,9 @@
     --box-border: 225 0% 90%;
     --box-shadow: 225 0% 90% / 0.5;
     --heading-1: 225 0% 10%;
-    --heading-2: 225 0% 90%;
-    --heading-3: 225 0% 60%;
-    --heading-4: 225 0% 50%;
+    --heading-2: 225 0% 30%;
+    --heading-3: 225 0% 30%;
+    --heading-4: 225 0% 10%;
     --footer: 225 0% 100%;
 }
 
@@ -16,7 +16,7 @@
     .bg-body {
         background-color: hsl(var(--color-bg));
     }
-    .bg-box-bg {
+    .bg-box {
         background-color: hsl(var(--color-box));
     }
     .text-heading-1 {
@@ -141,7 +141,7 @@ h1 {
 }
 
 h2 {
-  @apply text-2xl;
+  @apply text-3xl font-semibold;
 }
 
 .social-icon {
