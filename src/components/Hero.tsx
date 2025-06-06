@@ -9,7 +9,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center text-center">
+    <section className="relative min-h-screen py-24 flex items-center justify-center text-center">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Learn Data Structures & Algorithms{" "}
@@ -23,7 +23,7 @@ const Hero = () => {
       {/* Scroll Button */}
       <button
         onClick={scrollToNext}
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition"
+        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition"
         aria-label="Scroll to next section"
       >
         <ChevronDown className="w-6 h-6" />

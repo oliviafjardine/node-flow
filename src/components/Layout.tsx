@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="relative flex flex-col min-h-screen overflow-x-hidden">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
       {/* Fixed background image for smooth scrolling */}
       <div
         aria-hidden="true"

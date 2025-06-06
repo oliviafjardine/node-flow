@@ -5,7 +5,7 @@
     --color-box: 225 0% 98%;
     --box-border: 225 0% 90%;
     --box-shadow: 225 0% 90% / 0.5;
-    --heading-1: 225 0% 10%;
+    --heading-1: 218 90% 45%;
     --heading-2: 225 0% 30%;
     --heading-3: 225 0% 30%;
     --heading-4: 225 0% 10%;
@@ -122,6 +122,12 @@
       color: transparent;
     }
 }
+
+html, body, #root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 
 html {
     scroll-behavior: smooth;
