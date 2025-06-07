@@ -1,3 +1,5 @@
+import React from "react";
+import Card from "../shared/Card";
 import {
   Grid,
   Link as LinkIcon,
@@ -16,7 +18,7 @@ const dataStructures = [
     title: "Arrays",
     description: "Linear collection of elements stored in contiguous memory locations",
     timeComplexity: { access: "O(1)", search: "O(n)", insert: "O(n)", delete: "O(n)" },
-    link: "/visualizations/arrays",
+    link: "./components/visualizations/Arrays",
     tags: ["Static", "Contiguous"],
     icon: <Grid className="w-6 h-6 text-heading-1" />,
   },
@@ -101,3 +103,18 @@ const dataStructures = [
     icon: <Search className="w-6 h-6 text-heading-1" />,
   },
 ];
+
+const DataStructuresSection: React.FC = () => {
+  return (
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <h2 className="text-heading-2 text-4xl mb-8 text-center fade-in py-8">Data Structures</h2>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {dataStructures.map((ds) => (
+          <Card key={ds.title} {...ds} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default DataStructuresSection;

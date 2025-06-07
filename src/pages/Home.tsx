@@ -1,4 +1,4 @@
-import Hero from '../components/Hero';
+import Hero from '../components/shared/Hero';
 import About from '../components/sections/AboutSection';
 import DataStructures from '../components/sections/DataStructuresSection';
 import Algorithms from '../components/sections/AlgorithmsSection';
