@@ -1,78 +1,112 @@
-# Node Flow
+# 🔄 NODE FLOW
 
-An interactive platform for learning data structures and algorithms through visualization.
+> *Learn data structures and algorithms through interactive visualization!*
 
-![Node Flow Logo](/src/assets/code.png)
+---
 
-## Overview
+![Last Commit](https://img.shields.io/github/last-commit/olivia-jardine/node-flow)
+![Top Language](https://img.shields.io/github/languages/top/olivia-jardine/node-flow)
+![Language Count](https://img.shields.io/github/languages/count/olivia-jardine/node-flow)
 
-Node Flow is an educational web application designed to help users understand complex data structures and algorithms through step-by-step visual explanations, interactive examples, and hands-on practice.
+---
 
-## Features
+## 🚀 Built with the Tools and Technologies
 
-- **Interactive Visualizations**: Explore data structures and algorithms with dynamic, interactive visualizations
-- **Comprehensive Coverage**: Learn about arrays, linked lists, trees, graphs, sorting algorithms, and more
-- **Time Complexity Analysis**: Understand the performance characteristics of different operations
-- **Responsive Design**: Optimized for both desktop and mobile devices
-
-## Technology Stack
-
-### Languages
 - TypeScript
-- HTML/CSS
-
-### Frontend
-- React.js
-- React Router DOM
+- React
 - TailwindCSS
-- Lucide React (Icons)
-- React Icons
+- React Router DOM
 - Tanstack React Query
-
-### Development Tools
+- Lucide React
+- React Icons
 - Vite
 - ESLint
-- TypeScript
 
-## Getting Started
+---
 
-### Prerequisites
+## 📚 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Creator](#creator)
+- [License](#license)
+
+---
+
+## 🌟 Overview
+
+**NODE FLOW** is an educational web application designed to help users understand complex data structures and algorithms through step-by-step visual explanations, interactive examples, and hands-on practice.
+
+### 💡 Why Node Flow?
+
+This project aims to provide an engaging and educational experience for anyone learning computer science fundamentals. The core features include:
+
+- 🔄 **Interactive Visualizations**: Explore data structures and algorithms with dynamic, interactive visualizations
+- 📊 **Comprehensive Coverage**: Learn about arrays, linked lists, trees, graphs, sorting algorithms, and more
+- ⏱️ **Time Complexity Analysis**: Understand the performance characteristics of different operations
+- 📱 **Responsive Design**: Optimized for both desktop and mobile devices
+
+---
+
+## 🛠️ Getting Started
+
+### ✅ Prerequisites
+
+Ensure you have the following installed:
+
 - Node.js (v18.18.0 or higher)
 - npm or yarn
 
-### Installation
+---
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/oliviafjardine/node-flow.git
-   cd node-flow
-   ```
+### 📦 Installation
 
-2. Install dependencies
-   ```bash
-   npm install
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/olivia-jardine/node-flow.git
 
-3. Start the development server
-   ```bash
-   npm run dev
-   ```
+# Navigate to the project directory
+cd node-flow
 
-4. Open your browser and navigate to `http://localhost:5173`
+# Install dependencies
+npm install
 
-### Building for Production
+# Start the development server
+npm run dev
+```
+
+Open your browser and navigate to `http://localhost:5173`
+
+### 🏗️ Building for Production
 
 ```bash
 npm run build
 ```
 
-## Project Structure
+---
+
+## 📂 Project Structure
 
 - `/src`: Source code
   - `/components`: Reusable UI components
   - `/pages`: Page components
   - `/assets`: Static assets like images
 
-## License
+---
+
+## 👩‍💻 Creator
+
+- **Olivia Jardine**
+  - [GitHub](https://github.com/olivia-jardine)
+  - [LinkedIn](https://linkedin.com/in/olivia-jardine)
+  - [Instagram](https://instagram.com/olivia.jardine)
+
+---
+
+## 📄 License
 
 [MIT License](LICENSE)
