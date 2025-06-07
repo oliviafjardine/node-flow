@@ -44,7 +44,7 @@ Node Flow is an educational web application designed to help users understand co
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/olivia-jardine/node-flow.git
+   git clone https://github.com/oliviafjardine/node-flow.git
    cd node-flow
    ```
 
@@ -72,13 +72,6 @@ npm run build
   - `/components`: Reusable UI components
   - `/pages`: Page components
   - `/assets`: Static assets like images
-
-## Creator
-
-- Olivia Jardine
-  - [GitHub](https://github.com/olivia-jardine)
-  - [LinkedIn](https://linkedin.com/in/olivia-jardine)
-  - [Instagram](https://instagram.com/olivia.jardine)
 
 ## License
 
