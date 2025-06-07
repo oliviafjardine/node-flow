@@ -4,9 +4,9 @@
 
 ---
 
-![Last Commit](https://img.shields.io/github/last-commit/olivia-jardine/node-flow)
-![Top Language](https://img.shields.io/github/languages/top/olivia-jardine/node-flow)
-![Language Count](https://img.shields.io/github/languages/count/olivia-jardine/node-flow)
+![Last Commit](https://img.shields.io/github/last-commit/oliviafjardine/node-flow)
+![Top Language](https://img.shields.io/github/languages/top/oliviafjardine/node-flow)
+![Language Count](https://img.shields.io/github/languages/count/oliviafjardine/node-flow)
 
 ---
 
