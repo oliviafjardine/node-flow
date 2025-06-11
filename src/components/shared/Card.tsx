@@ -1,11 +1,11 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   Search,
   Database,
   Upload,
   Trash2,
-  ArrowDownRight,
+  ArrowRight,
+  Clock,
 } from "lucide-react";
 
 interface CardProps {
@@ -22,83 +22,114 @@ interface CardProps {
   icon?: React.ReactNode;
 }
 
+
+
 const Card: React.FC<CardProps> = ({
   title,
   description,
   timeComplexity,
   link,
   tags = [],
-  icon,  // destructure icon
+  icon,
 }) => {
   return (
     <Link
       to={link}
-      className="group flex flex-col h-full rounded-2xl border border-[hsl(var(--box-border))] bg-box p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className="group block h-full bg-surface rounded-xl border border-subtle hover:border-accent/30 transition-all duration-300 hover:shadow-custom-lg hover:-translate-y-1"
     >
-      {/* Top Content */}
-      <div className="flex-grow">
-        {/* Title with icon */}
-        <div className="mb-3 flex items-center gap-3">
-          {icon && <div className="w-6 h-6 text-heading-1">{icon}</div>}
-          <h3 className="text-2xl font-bold text-heading-1">{title}</h3>
+      <div className="p-8 h-full flex flex-col">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-6">
+          {icon && (
+            <div className="w-14 h-14 bg-accent-light border border-accent/20 rounded-xl flex items-center justify-center group-hover:bg-accent-muted group-hover:border-accent/30 transition-all duration-300">
+              <div className="w-7 h-7 text-accent transition-colors">
+                {icon}
+              </div>
+            </div>
+          )}
+          <div>
+            <h3 className="text-xl font-semibold text-primary group-hover:text-accent transition-colors">
+              {title}
+            </h3>
+          </div>
         </div>
 
         {/* Description */}
-        <p className="mb-6 text-sm font-semibold text-heading-3 leading-relaxed">{description}</p>
+        <p className="text-secondary leading-relaxed mb-8 flex-grow">
+          {description}
+        </p>
 
-        {/* Time Complexity */}
-        <div className="mb-6">
-          <h4 className="mb-2 text-heading-2 font-semibold">Time Complexity</h4>
-          <ul className="grid grid-cols-2 gap-2 text-sm text-heading-3">
+        {/* Time Complexity Grid */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-6 h-6 bg-accent-light rounded-lg flex items-center justify-center">
+              <Clock className="w-4 h-4 text-accent" />
+            </div>
+            <span className="font-semibold text-primary">Time Complexity</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
             {timeComplexity.access && (
-              <li className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-heading-2" />
-                <span>
-                  <strong>Access:</strong> {timeComplexity.access}
-                </span>
-              </li>
+              <div className="flex items-center gap-3 p-4 bg-surface-elevated border border-subtle rounded-lg hover:border-accent/20 transition-colors">
+                <Database className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="text-muted font-medium">Access</div>
+                  <div className="font-mono font-semibold text-primary">{timeComplexity.access}</div>
+                </div>
+              </div>
             )}
             {timeComplexity.search && (
-              <li className="flex items-center gap-2">
-                <Search className="w-4 h-4 text-heading-2" />
-                <span>
-                  <strong>Search:</strong> {timeComplexity.search}
-                </span>
-              </li>
+              <div className="flex items-center gap-3 p-4 bg-surface-elevated border border-subtle rounded-lg hover:border-accent/20 transition-colors">
+                <Search className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="text-muted font-medium">Search</div>
+                  <div className="font-mono font-semibold text-primary">{timeComplexity.search}</div>
+                </div>
+              </div>
             )}
             {timeComplexity.insert && (
-              <li className="flex items-center gap-2">
-                <Upload className="w-4 h-4 text-heading-2" />
-                <span>
-                  <strong>Insert:</strong> {timeComplexity.insert}
-                </span>
-              </li>
+              <div className="flex items-center gap-3 p-4 bg-surface-elevated border border-subtle rounded-lg hover:border-accent/20 transition-colors">
+                <Upload className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="text-muted font-medium">Insert</div>
+                  <div className="font-mono font-semibold text-primary">{timeComplexity.insert}</div>
+                </div>
+              </div>
             )}
             {timeComplexity.delete && (
-              <li className="flex items-center gap-2">
-                <Trash2 className="w-4 h-4 text-heading-2" />
-                <span>
-                  <strong>Delete:</strong> {timeComplexity.delete}
-                </span>
-              </li>
+              <div className="flex items-center gap-3 p-4 bg-surface-elevated border border-subtle rounded-lg hover:border-accent/20 transition-colors">
+                <Trash2 className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="text-muted font-medium">Delete</div>
+                  <div className="font-mono font-semibold text-primary">{timeComplexity.delete}</div>
+                </div>
+              </div>
             )}
-          </ul>
+          </div>
         </div>
-      </div>
 
-      {/* Bottom Row: Tags + Arrow */}
-      <div className="mt-2 flex items-center justify-between">
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag, i) => (
-            <span
-              key={i}
-              className="rounded-full bg-heading-2/10 text-heading-4 px-3 py-1 text-xs font-medium border border-heading-2"
-            >
-              {tag}
-            </span>
-          ))}
+        {/* Footer */}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-wrap gap-1.5">
+            {tags.slice(0, 2).map((tag, i) => (
+              <span
+                key={i}
+                className="px-2 py-1 bg-accent-light border border-accent/20 text-accent text-xs font-medium rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+            {tags.length > 2 && (
+              <span className="px-2 py-1 bg-surface-elevated border border-subtle text-muted text-xs font-medium rounded-full">
+                +{tags.length - 2}
+              </span>
+            )}
+          </div>
+
+          <div className="w-8 h-8 bg-surface-elevated border border-subtle rounded flex items-center justify-center group-hover:bg-accent-light group-hover:border-accent/20 transition-all duration-300">
+            <ArrowRight className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-300" />
+          </div>
         </div>
-        <ArrowDownRight className="w-5 h-5 text-heading-1 group-hover:translate-x-1 transition-transform duration-300" />
       </div>
     </Link>
   );

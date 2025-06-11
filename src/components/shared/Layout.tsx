@@ -8,17 +8,23 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col min-h-screen overflow-x-hidden">
-      {/* Fixed background image for smooth scrolling */}
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 -z-10 w-full h-full bg-body bg-center bg-no-repeat"
-      />
+    <div className="min-h-screen bg-bg">
       <Navbar />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer />
+
+      {/* Main Content Area */}
+      <div className="lg:pl-64">
+        {/* Mobile top padding for header */}
+        <div className="lg:hidden h-16"></div>
+
+        {/* Content separator for better contrast */}
+        <div className="lg:border-l border-subtle">
+          <main className="min-h-screen bg-surface">
+            {children}
+          </main>
+
+          <Footer />
+        </div>
+      </div>
     </div>
   );
 };

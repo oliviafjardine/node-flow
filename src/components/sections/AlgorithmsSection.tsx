@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../shared/Card";
+import AlgorithmsComparison from "./AlgorithmsComparison";
+import TopicRequestModal from "../shared/TopicRequestModal";
+import { LayoutGrid, Table, Zap, Plus } from "lucide-react";
 
 const algorithms = [
   {
@@ -27,16 +30,16 @@ const algorithms = [
     tags: ["Bubble", "Merge", "Quick", "Counting", "Radix"],
   },
   {
-    title: "Searching Algorithms",
-    description: "Linear and Binary Search for finding values in arrays.",
+    title: "Binary Search",
+    description: "Efficiently find elements in sorted arrays using divide and conquer.",
     timeComplexity: {
       access: "N/A",
-      search: "O(n) / O(log n)",
+      search: "O(log n)",
       insert: "N/A",
       delete: "N/A",
     },
-    link: "/visualizations/searching-algorithms",
-    tags: ["Linear", "Binary"],
+    link: "/visualizations/binary-search",
+    tags: ["Binary", "Divide & Conquer"],
   },
   {
     title: "Greedy I: Non-overlapping Intervals",
@@ -137,13 +140,82 @@ const algorithms = [
 ];
 
 const AlgorithmsSection: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'cards' | 'comparison'>('cards');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-heading-2 text-4xl mb-8 text-center fade-in py-8">Algorithms</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {algorithms.map((algo) => (
-          <Card key={algo.title} {...algo} />
-        ))}
+    <section className="min-h-screen bg-surface">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-accent-light border border-accent/20 rounded-2xl flex items-center justify-center">
+                <Zap className="w-8 h-8 text-accent" />
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-bold text-primary">Algorithms</h1>
+            </div>
+            <p className="text-secondary text-xl max-w-3xl leading-relaxed">
+              Discover essential algorithms and their time complexities through step-by-step visualizations and comprehensive explanations.
+            </p>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 bg-surface-elevated rounded-xl p-1 border border-subtle shadow-custom-sm">
+            <button
+              onClick={() => setViewMode('cards')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                viewMode === 'cards'
+                  ? 'bg-accent text-inverse shadow-custom-sm'
+                  : 'text-secondary hover:text-primary hover:bg-surface'
+              }`}
+            >
+              <LayoutGrid className="w-5 h-5" />
+              Cards
+            </button>
+            <button
+              onClick={() => setViewMode('comparison')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                viewMode === 'comparison'
+                  ? 'bg-accent text-inverse shadow-custom-sm'
+                  : 'text-secondary hover:text-primary hover:bg-surface'
+              }`}
+            >
+              <Table className="w-5 h-5" />
+              Compare
+            </button>
+          </div>
+        </div>
+
+        {/* Content based on view mode */}
+        {viewMode === 'cards' ? (
+          <div className="space-y-16">
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {algorithms.map((algo) => (
+                <Card key={algo.title} {...algo} />
+              ))}
+            </div>
+
+            {/* Can't find topic link */}
+            <div className="text-center pt-8 border-t border-subtle">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-surface-elevated border border-subtle rounded-xl text-secondary hover:text-accent hover:border-accent/30 transition-all duration-200 shadow-custom-sm hover:shadow-custom-md"
+              >
+                <Plus className="w-5 h-5" />
+                <span className="font-medium">Can't find an algorithm? Request it here</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <AlgorithmsComparison />
+        )}
+
+        {/* Topic Request Modal */}
+        <TopicRequestModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </section>
   );

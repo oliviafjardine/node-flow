@@ -19,6 +19,7 @@
 - Tanstack React Query
 - Lucide React
 - React Icons
+- Framer Motion
 - Vite
 - ESLint
 

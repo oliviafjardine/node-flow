@@ -1,39 +1,157 @@
 @import "tailwindcss";
 
 @theme {
-    --color-bg: 220 70% 95%;
-    --color-box: 225 0% 98%;
-    --box-border: 225 0% 90%;
-    --box-shadow: 225 0% 90% / 0.5;
-    --heading-1: 218 90% 45%;
-    --heading-2: 225 0% 30%;
-    --heading-3: 225 0% 30%;
-    --heading-4: 225 0% 10%;
-    --footer: 225 0% 100%;
-    --color-btn: 217 91% 60%;
+    /* Professional Light Theme */
+    --color-bg: 0 0% 98%;
+    --color-surface: 0 0% 100%;
+    --color-surface-elevated: 0 0% 99%;
+    --color-border: 220 13% 91%;
+    --color-border-subtle: 220 13% 95%;
+
+    /* Text Colors - optimized for light theme */
+    --color-text-primary: 220 9% 15%;
+    --color-text-secondary: 220 9% 46%;
+    --color-text-tertiary: 220 9% 65%;
+    --color-text-muted: 220 9% 75%;
+    --color-text-inverse: 0 0% 100%;
+
+    /* Brand Colors - professional blue */
+    --color-primary: 217 91% 60%;
+    --color-primary-hover: 217 91% 55%;
+    --color-primary-light: 217 91% 96%;
+    --color-primary-dark: 217 91% 45%;
+
+    /* Blue Accent System */
+    --color-accent: 217 91% 60%;
+    --color-accent-hover: 217 91% 55%;
+    --color-accent-light: 217 91% 96%;
+    --color-accent-muted: 217 91% 85%;
+
+    /* Status Colors - professional */
+    --color-success: 142 76% 45%;
+    --color-success-light: 142 76% 96%;
+    --color-warning: 38 92% 50%;
+    --color-warning-light: 38 92% 96%;
+    --color-error: 0 84% 60%;
+    --color-error-light: 0 84% 96%;
+
+    /* Complexity Colors - professional system */
+    --color-excellent: 142 76% 45%;
+    --color-excellent-light: 142 76% 96%;
+    --color-good: 217 91% 60%;
+    --color-good-light: 217 91% 96%;
+    --color-fair: 38 92% 50%;
+    --color-fair-light: 38 92% 96%;
+    --color-acceptable: 25 95% 50%;
+    --color-acceptable-light: 25 95% 96%;
+    --color-poor: 0 84% 60%;
+    --color-poor-light: 0 84% 96%;
+
+    /* Shadows - softer for better visual hierarchy */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @layer utilities {
+    /* Background Colors */
     .bg-body {
         background-color: hsl(var(--color-bg));
     }
-    .bg-box {
-        background-color: hsl(var(--color-box));
+    .bg-surface {
+        background-color: hsl(var(--color-surface));
     }
-    .text-heading-1 {
-        color: hsl(var(--heading-1));
-    }
-
-    .text-heading-2 {
-        color: hsl(var(--heading-2));
+    .bg-surface-elevated {
+        background-color: hsl(var(--color-surface-elevated));
+        box-shadow: var(--shadow-sm);
     }
 
-    .text-heading-3 {
-        color: hsl(var(--heading-3));
-    } 
-    .bg-footer {
-        background-color: hsl(var(--footer));
+    /* Text Colors */
+    .text-primary {
+        color: hsl(var(--color-text-primary));
     }
+    .text-secondary {
+        color: hsl(var(--color-text-secondary));
+    }
+    .text-tertiary {
+        color: hsl(var(--color-text-tertiary));
+    }
+    .text-muted {
+        color: hsl(var(--color-text-muted));
+    }
+    .text-inverse {
+        color: hsl(var(--color-text-inverse));
+    }
+
+    /* Brand Colors */
+    .text-brand {
+        color: hsl(var(--color-primary));
+    }
+    .bg-brand {
+        background-color: hsl(var(--color-primary));
+    }
+    .bg-brand-light {
+        background-color: hsl(var(--color-primary-light));
+    }
+    .bg-brand-dark {
+        background-color: hsl(var(--color-primary-dark));
+    }
+
+    /* Accent Colors - simplified blue system */
+    .text-accent {
+        color: hsl(var(--color-accent));
+    }
+    .bg-accent {
+        background-color: hsl(var(--color-accent));
+    }
+    .bg-accent-light {
+        background-color: hsl(var(--color-accent-light));
+    }
+    .bg-accent-muted {
+        background-color: hsl(var(--color-accent-muted));
+    }
+
+    /* Border Colors */
+    .border-default {
+        border-color: hsl(var(--color-border));
+    }
+    .border-subtle {
+        border-color: hsl(var(--color-border-subtle));
+    }
+
+    /* Complexity Colors */
+    .complexity-excellent {
+        background-color: hsl(var(--color-excellent-light));
+        color: hsl(var(--color-excellent));
+        border-color: hsl(var(--color-excellent));
+    }
+    .complexity-good {
+        background-color: hsl(var(--color-good-light));
+        color: hsl(var(--color-good));
+        border-color: hsl(var(--color-good));
+    }
+    .complexity-fair {
+        background-color: hsl(var(--color-fair-light));
+        color: hsl(var(--color-fair));
+        border-color: hsl(var(--color-fair));
+    }
+    .complexity-acceptable {
+        background-color: hsl(var(--color-acceptable-light));
+        color: hsl(var(--color-acceptable));
+        border-color: hsl(var(--color-acceptable));
+    }
+    .complexity-poor {
+        background-color: hsl(var(--color-poor-light));
+        color: hsl(var(--color-poor));
+        border-color: hsl(var(--color-poor));
+    }
+
+    /* Shadows */
+    .shadow-custom-sm { box-shadow: var(--shadow-sm); }
+    .shadow-custom-md { box-shadow: var(--shadow-md); }
+    .shadow-custom-lg { box-shadow: var(--shadow-lg); }
+    .shadow-custom-xl { box-shadow: var(--shadow-xl); }
 
   @keyframes fade-in {
       from {
@@ -67,61 +185,11 @@
 /* ==== Components Layer: Reusable Classes ==== */
 @layer components {
     .section-outer {
-      @apply mt-60 mb-20 mx-10; 
-    }
-    .box-padding {
-      @apply py-20
-    }
-    .btn {
-      @apply bg-blue-600 text-white py-2 px-8 rounded-full inline-flex items-center gap-2 relative overflow-hidden;
-      border: 1.2px solid hsl(var(--box-border));
-      box-shadow: 0 1px 2px 0 hsl(var(--box-shadow));
-    }
-    .btn:hover,
-    .btn:focus-visible {
-      @apply bg-blue-700 text-white;
-    }
-
-    .form-input-style {
-      @apply w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-2 text-sm placeholder:text-gray-300 placeholder:text-sm;
+      @apply mt-60 mb-20 mx-10;
     }
 }
 
-@layer utilities {
-    .underlink {
-      position: relative;
-      cursor: pointer;
-    }
-    .underlink::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: 3px;
-      width: 0;
-      height: 1px;
-      background: currentColor;
-      transition: all 0.3s;
-      transform: translateX(-50%);
-    }
-    .underlink:hover::after {
-      left: 50%;
-      width: 60%;
-      height: 1px;
-      transform: translateX(-50%);
-    }
-    .font-hero {
-      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif;
-      letter-spacing: -0.3em;
-      line-height: 0.9;
-      background-image: url('/src/assets/seattle.jpg');
-      background-size: cover;
-      background-position: center;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-    }
-}
+
 
 html, body, #root {
   height: 100%;
@@ -134,18 +202,72 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "SF Pro Text",
-      "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  @apply text-lg;
-  font-weight: 300;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: hsl(var(--color-text-primary));
+  background-color: hsl(var(--color-bg));
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Typography Scale */
 h1 {
-  @apply text-5xl mb-4 font-semibold;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--color-text-primary));
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 3rem;
+  }
 }
 
 h2 {
-  @apply text-3xl font-semibold;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: hsl(var(--color-text-primary));
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 1024px) {
+  h2 {
+    font-size: 1.875rem;
+  }
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--color-text-primary));
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 1024px) {
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(var(--color-text-primary));
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+p {
+  color: hsl(var(--color-text-secondary));
+  margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
 .social-icon {

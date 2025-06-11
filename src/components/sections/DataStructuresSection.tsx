@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../shared/Card";
+import DataStructuresComparison from "./DataStructuresComparison";
+import TopicRequestModal from "../shared/TopicRequestModal";
 import {
   Grid,
   Link as LinkIcon,
@@ -11,6 +13,9 @@ import {
   ShieldCheck,
   ArrowUpDown,
   Search,
+  LayoutGrid,
+  Table,
+  Plus,
 } from "lucide-react";
 
 const dataStructures = [
@@ -18,7 +23,7 @@ const dataStructures = [
     title: "Arrays",
     description: "Linear collection of elements stored in contiguous memory locations",
     timeComplexity: { access: "O(1)", search: "O(n)", insert: "O(n)", delete: "O(n)" },
-    link: "./components/visualizations/Arrays",
+    link: "/visualizations/arrays",
     tags: ["Static", "Contiguous"],
     icon: <Grid className="w-6 h-6 text-heading-1" />,
   },
@@ -105,13 +110,82 @@ const dataStructures = [
 ];
 
 const DataStructuresSection: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'cards' | 'comparison'>('cards');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-heading-2 text-4xl mb-8 text-center fade-in py-8">Data Structures</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {dataStructures.map((ds) => (
-          <Card key={ds.title} {...ds} />
-        ))}
+    <section className="min-h-screen bg-surface">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-accent-light border border-accent/20 rounded-2xl flex items-center justify-center">
+                <Grid className="w-8 h-8 text-accent" />
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-bold text-primary">Data Structures</h1>
+            </div>
+            <p className="text-secondary text-xl max-w-3xl leading-relaxed">
+              Explore fundamental data structures and their time complexities through interactive visualizations and comprehensive explanations.
+            </p>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 bg-surface-elevated rounded-xl p-1 border border-subtle shadow-custom-sm">
+            <button
+              onClick={() => setViewMode('cards')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                viewMode === 'cards'
+                  ? 'bg-accent text-inverse shadow-custom-sm'
+                  : 'text-secondary hover:text-primary hover:bg-surface'
+              }`}
+            >
+              <LayoutGrid className="w-5 h-5" />
+              Cards
+            </button>
+            <button
+              onClick={() => setViewMode('comparison')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                viewMode === 'comparison'
+                  ? 'bg-accent text-inverse shadow-custom-sm'
+                  : 'text-secondary hover:text-primary hover:bg-surface'
+              }`}
+            >
+              <Table className="w-5 h-5" />
+              Compare
+            </button>
+          </div>
+        </div>
+
+        {/* Content based on view mode */}
+        {viewMode === 'cards' ? (
+          <div className="space-y-16">
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {dataStructures.map((ds) => (
+                <Card key={ds.title} {...ds} />
+              ))}
+            </div>
+
+            {/* Can't find topic link */}
+            <div className="text-center pt-8 border-t border-subtle">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-surface-elevated border border-subtle rounded-xl text-secondary hover:text-accent hover:border-accent/30 transition-all duration-200 shadow-custom-sm hover:shadow-custom-md"
+              >
+                <Plus className="w-5 h-5" />
+                <span className="font-medium">Can't find a data structure? Request it here</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <DataStructuresComparison />
+        )}
+
+        {/* Topic Request Modal */}
+        <TopicRequestModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </section>
   );

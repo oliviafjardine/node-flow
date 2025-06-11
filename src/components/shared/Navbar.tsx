@@ -1,101 +1,156 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, X, Home, Database, Zap, User, ChevronRight } from 'lucide-react';
 
 const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/algorithms', label: 'Algorithms' },
-  { to: '/data-structures', label: 'Data Structures' },
-  { to: '/about', label: 'About', isCTA: true },
+  { to: '/', label: 'Home', icon: Home },
+  { to: '/data-structures', label: 'Data Structures', icon: Database },
+  { to: '/algorithms', label: 'Algorithms', icon: Zap },
+  { to: '/about', label: 'About', icon: User },
 ];
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [fadeIn, setFadeIn] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      setIsMenuVisible(true);
-      setTimeout(() => setFadeIn(true), 10);
-    } else {
-      setFadeIn(false);
-      const timeout = setTimeout(() => setIsMenuVisible(false), 300);
-      return () => clearTimeout(timeout);
-    }
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [isMobileMenuOpen]);
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev);
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-footer py-6 shadow-sm border-b border-gray-200">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <Link
-          to="/"
-          className="flex items-center gap-1 text-base font-semibold tracking-wide text-hero"
-        >
-          <img src="/src/assets/code.png" alt="logo" className='w-8 h-auto mr-2'/>
-          Node Flow
-        </Link>
-
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center space-x-6 text-sm">
-          {navLinks.map(({ to, label, isCTA }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`transition-colors duration-300 ${
-                isCTA
-                  ? 'btn bg-box text-heading-1 hover:bg-heading-3'
-                  : 'underlink px-2 py-2 rounded-full text-hero hover:text-heading-1'
-              }`}
-            >
-              {isCTA ? <span className="btn__content">{label}</span> : label}
-            </Link>
-          ))}
+    <>
+      {/* Desktop Sidebar */}
+      <nav className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-surface border-r border-default flex-col z-50">
+        {/* Logo */}
+        <div className="p-6 border-b border-subtle">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
+              <Database className="w-6 h-6 text-inverse" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-primary">Node Flow</h1>
+              <p className="text-xs text-tertiary">Learn DSA Visually</p>
+            </div>
+          </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMobileMenu}
-          className="md:hidden p-2 rounded-full transition-colors z-50 transform transition-transform duration-300 ease-in-out text-hero"
-          aria-label="Toggle menu"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
-      </div>
+        {/* Navigation Links */}
+        <div className="flex-1 p-4">
+          <div className="space-y-2">
+            {navLinks.map(({ to, label, icon: Icon }) => {
+              const isActive = location.pathname === to;
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                    isActive
+                      ? 'bg-brand-light text-brand border border-brand/20'
+                      : 'text-secondary hover:text-primary hover:bg-surface-elevated'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary group-hover:text-primary'}`} />
+                  <span className="font-medium">{label}</span>
+                  {isActive && <ChevronRight className="w-4 h-4 ml-auto text-brand" />}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-4 border-t border-subtle">
+          <div className="text-xs text-tertiary">
+            <p>© 2024 Node Flow</p>
+            <p>Interactive DSA Learning</p>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-surface border-b border-default z-50">
+        <div className="flex items-center justify-between h-full px-4">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-brand rounded-lg flex items-center justify-center">
+              <Database className="w-5 h-5 text-inverse" />
+            </div>
+            <span className="text-lg font-bold text-primary">Node Flow</span>
+          </Link>
+
+          <button
+            onClick={toggleMobileMenu}
+            className="p-2 rounded-lg hover:bg-surface-elevated transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-primary" />
+            ) : (
+              <Menu className="w-6 h-6 text-primary" />
+            )}
+          </button>
+        </div>
+      </header>
 
       {/* Mobile Menu */}
-      {isMenuVisible && (
-        <div
-          className={`md:hidden fixed inset-0 z-40 bg-white backdrop-blur-3xl transition-opacity duration-300 ${
-            fadeIn ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          <div className="w-full px-6 flex flex-col items-center justify-center h-full space-y-6">
-            {navLinks.map(({ to, label, isCTA }) => (
-              <Link
-                key={to}
-                to={to}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`transition-colors duration-300 ${
-                  isCTA
-                    ? 'btn text-lg bg-box text-heading-1 hover:bg-heading-3'
-                    : 'underlink text-lg px-6 py-2 rounded-full text-hero hover:text-heading-1'
-                }`}
-              >
-                {isCTA ? <span className="btn__content">{label}</span> : label}
-              </Link>
-            ))}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={toggleMobileMenu}>
+          <div
+            className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-surface shadow-custom-xl transform transition-transform duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 border-b border-subtle">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
+                  <Database className="w-6 h-6 text-inverse" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold text-primary">Node Flow</h1>
+                  <p className="text-sm text-tertiary">Learn DSA Visually</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="space-y-2">
+                {navLinks.map(({ to, label, icon: Icon }) => {
+                  const isActive = location.pathname === to;
+                  return (
+                    <Link
+                      key={to}
+                      to={to}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                        isActive
+                          ? 'bg-brand-light text-brand border border-brand/20'
+                          : 'text-secondary hover:text-primary hover:bg-surface-elevated'
+                      }`}
+                    >
+                      <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary'}`} />
+                      <span className="font-medium">{label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 };
 
