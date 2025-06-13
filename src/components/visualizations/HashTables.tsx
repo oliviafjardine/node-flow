@@ -13,7 +13,6 @@ interface HashBucket {
 
 export default function HashTablesVisualizer() {
   const TABLE_SIZE = 7;
-
   const [hashTable, setHashTable] = useState<HashBucket[]>(
     Array(TABLE_SIZE).fill(null).map(() => ({ entries: [], isHighlighted: false }))
   );
