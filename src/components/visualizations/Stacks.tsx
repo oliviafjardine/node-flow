@@ -64,7 +64,7 @@ export default function StackVisualizer() {
     setPoppedValue(null);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handlePush();
     }
@@ -94,7 +94,7 @@ export default function StackVisualizer() {
                   placeholder="Enter a number"
                   value={pushValue}
                   onChange={(e) => setPushValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
                 />
                 <button

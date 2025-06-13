@@ -34,7 +34,7 @@ export default function DivideAndConquerVisualizer() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [mergeSteps, setMergeSteps] = useState<MergeStep[]>([]);
+
   const [lastOperation, setLastOperation] = useState<string | null>(null);
   const [currentLevel, setCurrentLevel] = useState(0);
   const [maxLevel, setMaxLevel] = useState(0);
@@ -50,7 +50,7 @@ export default function DivideAndConquerVisualizer() {
       level: 0
     })));
     setCurrentStep(0);
-    setMergeSteps([]);
+
     setLastOperation(null);
     setCurrentLevel(0);
     setMaxLevel(0);
@@ -140,7 +140,6 @@ export default function DivideAndConquerVisualizer() {
     setIsPlaying(true);
 
     const steps = generateMergeSteps(array);
-    setMergeSteps(steps);
     setMaxLevel(Math.ceil(Math.log2(array.length)));
 
     for (let i = 0; i < steps.length; i++) {

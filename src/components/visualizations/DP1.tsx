@@ -27,7 +27,7 @@ export default function DP1Visualizer() {
   const [knapsackCapacity, setKnapsackCapacity] = useState(7);
   const [dpTable, setDpTable] = useState<DPCell[][]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
+
   const [currentItem, setCurrentItem] = useState(0);
   const [currentWeight, setCurrentWeight] = useState(0);
   const [lastOperation, setLastOperation] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export default function DP1Visualizer() {
     );
 
     setDpTable(newTable);
-    setCurrentStep(0);
+
     setCurrentItem(0);
     setCurrentWeight(0);
     setLastOperation(null);
@@ -90,7 +90,6 @@ export default function DP1Visualizer() {
 
       for (let w = 1; w <= W; w++) {
         step++;
-        setCurrentStep(step);
         setCurrentWeight(w);
 
         // Highlight current cell

@@ -33,7 +33,7 @@ export default function BinarySearchVisualizer() {
   const [left, setLeft] = useState<number | null>(null);
   const [right, setRight] = useState<number | null>(null);
   const [mid, setMid] = useState<number | null>(null);
-  const [found, setFound] = useState<number | null>(null);
+
   const [lastOperation, setLastOperation] = useState<string | null>(null);
   const [comparisons, setComparisons] = useState(0);
 
@@ -50,7 +50,7 @@ export default function BinarySearchVisualizer() {
     setLeft(null);
     setRight(null);
     setMid(null);
-    setFound(null);
+
     setSearchStep(0);
     setIsSearching(false);
     setLastOperation(null);
@@ -98,7 +98,6 @@ export default function BinarySearchVisualizer() {
 
       if (array[midIdx].value === targetValue) {
         // Found the target
-        setFound(midIdx);
         setArray(prev => prev.map((item, index) => ({
           ...item,
           isFound: index === midIdx,

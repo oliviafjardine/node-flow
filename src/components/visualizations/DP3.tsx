@@ -1,14 +1,7 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
-interface ArrayElement {
-  value: number;
-  index: number;
-  dpValue?: number;
-  isActive?: boolean;
-  isInLIS?: boolean;
-  isComparing?: boolean;
-}
+
 
 export default function DP3Visualizer() {
   const [array, setArray] = useState<number[]>([10, 9, 2, 5, 3, 7, 101, 18]);

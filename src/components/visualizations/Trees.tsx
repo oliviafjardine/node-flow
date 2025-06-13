@@ -181,7 +181,7 @@ const TreesVisualizer: React.FC = () => {
     setHighlightedPath([]);
   };
 
-  const renderNode = (node: TreeNode): JSX.Element => (
+  const renderNode = (node: TreeNode): React.ReactElement => (
     <div key={node.id}>
       {/* Node */}
       <div

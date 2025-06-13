@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Search,
-  Database,
-  Upload,
-  Trash2,
-  ArrowRight,
-  Clock,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface CardProps {
   title: string;

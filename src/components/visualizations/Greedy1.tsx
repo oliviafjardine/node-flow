@@ -269,7 +269,7 @@ export default function Greedy1Visualizer() {
 
               {/* Intervals */}
               <div className="space-y-3">
-                {intervals.map((interval, index) => (
+                {intervals.map((interval) => (
                   <motion.div
                     key={interval.id}
                     initial={{ scale: 1 }}

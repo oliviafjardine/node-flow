@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import VisualizationLayout from './shared/VisualizationLayout';
 
 interface GraphNode {
@@ -45,7 +45,7 @@ const DijkstraBellmanVisualizer: React.FC = () => {
   const [startNode, setStartNode] = useState('A');
   const [isRunning, setIsRunning] = useState(false);
   const [lastOperation, setLastOperation] = useState<string | null>(null);
-  const [currentStep, setCurrentStep] = useState(0);
+
 
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -150,7 +150,7 @@ const DijkstraBellmanVisualizer: React.FC = () => {
 
   const runAlgorithm = async () => {
     setIsRunning(true);
-    setCurrentStep(0);
+
     
     if (algorithm === 'dijkstra') {
       await runDijkstra();
@@ -164,7 +164,7 @@ const DijkstraBellmanVisualizer: React.FC = () => {
   const resetVisualization = () => {
     setNodes(initialNodes);
     setEdges(initialEdges);
-    setCurrentStep(0);
+
     setLastOperation(null);
     setIsRunning(false);
   };

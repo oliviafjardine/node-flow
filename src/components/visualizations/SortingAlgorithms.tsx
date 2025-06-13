@@ -218,11 +218,7 @@ export default function SortingAlgorithmsVisualizer() {
     setTotalSteps(0);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !isPlaying) {
-      startSorting();
-    }
-  };
+
 
   const getAlgorithmInfo = () => {
     const info: Record<SortingAlgorithm, { time: string; space: string; description: string }> = {
