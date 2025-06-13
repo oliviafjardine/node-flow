@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import VisualizationLayout from './shared/VisualizationLayout';
-import AnimatedEdge from './shared/AnimatedEdge';
 
 interface ListNode {
   id: string;
@@ -31,12 +28,14 @@ export default function LinkedListVisualizer() {
   const [searchResult, setSearchResult] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [currentSearchIndex, setCurrentSearchIndex] = useState<number | null>(null);
+  const [lastOperation, setLastOperation] = useState<'insert' | 'delete' | 'search' | null>(null);
 
   const handleInsert = () => {
     const value = parseInt(insertValue);
     const position = parseInt(insertPosition);
     
     if (isNaN(value) || isNaN(position) || position < 0 || position > nodes.length) return;
+    if (insertValue.trim() === '' || insertPosition.trim() === '') return;
 
     const newId = `node-${Date.now()}`;
     const newNode: ListNode = { id: newId, value, next: null };
@@ -61,7 +60,7 @@ export default function LinkedListVisualizer() {
       newNodes.splice(position, 0, newNode);
     }
 
-    // Update all node IDs and connections to maintain consistency
+    // Update all node connections to maintain consistency
     for (let i = 0; i < newNodes.length; i++) {
       if (i < newNodes.length - 1) {
         newNodes[i].next = newNodes[i + 1].id;
@@ -75,10 +74,11 @@ export default function LinkedListVisualizer() {
     setInsertPosition('');
     setSearchResult(null);
     setHighlightedNode(null);
+    setLastOperation('insert');
   };
 
   const handleDelete = (nodeId: string) => {
-    if (isSearching) return; // Prevent deletion during search
+    if (isSearching) return;
     
     const nodeIndex = nodes.findIndex(n => n.id === nodeId);
     if (nodeIndex === -1) return;
@@ -98,26 +98,37 @@ export default function LinkedListVisualizer() {
     setNodes(newNodes);
     setSearchResult(null);
     setHighlightedNode(null);
+    setLastOperation('delete');
+  };
+
+  const handleAccess = (nodeId: string) => {
+    if (isSearching) return;
+    const nodeIndex = nodes.findIndex(n => n.id === nodeId);
+    if (nodeIndex === -1) return;
+    
+    setHighlightedNode(nodeId);
+    setSearchResult(null);
+    setTimeout(() => setHighlightedNode(null), 2000);
   };
 
   const animatedSearch = async () => {
     const value = parseInt(searchValue);
-    if (isNaN(value)) return;
+    if (isNaN(value) || searchValue.trim() === '') return;
 
     setIsSearching(true);
     setSearchResult(null);
     setHighlightedNode(null);
+    setLastOperation('search');
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       setHighlightedNode(node.id);
       setCurrentSearchIndex(i);
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 600));
 
       if (node.value === value) {
         setSearchResult(node.id);
         setCurrentSearchIndex(null);
-        setHighlightedNode(null);
         setIsSearching(false);
         return;
       }
@@ -138,205 +149,199 @@ export default function LinkedListVisualizer() {
     setInsertValue('');
     setInsertPosition('');
     setSearchValue('');
+    setLastOperation(null);
   };
 
-  const controls = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-primary">Insert Node</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Value"
-              value={insertValue}
-              onChange={(e) => setInsertValue(e.target.value)}
-              disabled={isSearching}
-              className="flex-1 px-3 py-2 border border-subtle rounded-lg bg-surface text-primary placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:opacity-50"
-            />
-            <input
-              type="number"
-              placeholder="Position"
-              value={insertPosition}
-              onChange={(e) => setInsertPosition(e.target.value)}
-              disabled={isSearching}
-              className="w-24 px-3 py-2 border border-subtle rounded-lg bg-surface text-primary placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:opacity-50"
-            />
-            <button
-              onClick={handleInsert}
-              disabled={!insertValue || insertPosition === '' || isSearching || parseInt(insertPosition) < 0 || parseInt(insertPosition) > nodes.length}
-              className="px-4 py-2 bg-accent text-inverse rounded-lg hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-            >
-              Insert
-            </button>
-          </div>
-          <div className="text-xs text-muted">
-            Position range: 0 to {nodes.length} (0 = head, {nodes.length} = tail)
-          </div>
-        </div>
-        
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-primary">Search Node</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Search Value"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              disabled={isSearching}
-              className="flex-1 px-3 py-2 border border-subtle rounded-lg bg-surface text-primary placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent disabled:opacity-50"
-            />
-            <button
-              onClick={animatedSearch}
-              disabled={!searchValue || isSearching}
-              className="px-4 py-2 bg-accent text-inverse rounded-lg hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-            >
-              {isSearching ? 'Searching...' : 'Search'}
-            </button>
-          </div>
-          <div className="text-xs text-muted">
-            Sequential traversal from head to tail
-          </div>
-        </div>
-      </div>
-      
-      {/* Status Messages */}
-      <div className="space-y-3">
-        {searchResult === 'not-found' && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-3 bg-error-light border border-error/20 rounded-lg"
-          >
-            <span className="text-error font-medium">Not Found:</span> Value {searchValue} is not in the linked list
-          </motion.div>
-        )}
-
-        {searchResult && searchResult !== 'not-found' && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-3 bg-success-light border border-success/20 rounded-lg"
-          >
-            <span className="text-success font-medium">Found:</span> Value {searchValue} in the linked list
-          </motion.div>
-        )}
-        
-        {isSearching && currentSearchIndex !== null && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-3 bg-warning-light border border-warning/20 rounded-lg"
-          >
-            <span className="text-warning font-medium">Searching:</span> Checking position {currentSearchIndex} (value: {nodes[currentSearchIndex]?.value})
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-
-  // Calculate responsive positioning
-  const getNodePosition = (index: number) => {
-    const baseSpacing = Math.min(150, Math.max(120, (window?.innerWidth || 1200) / Math.max(nodes.length + 1, 6)));
-    return {
-      x: index * baseSpacing,
-      centerX: index * baseSpacing + 40 // Node center for arrows
-    };
+  const handleKeyPress = (e: React.KeyboardEvent, action: string) => {
+    if (e.key === 'Enter') {
+      if (action === 'insert') {
+        handleInsert();
+      } else if (action === 'search') {
+        animatedSearch();
+      }
+    }
   };
 
   return (
-    <VisualizationLayout
-      title="Linked List Visualization"
-      description="Linked lists store data in nodes connected by pointers. They allow dynamic memory allocation and efficient insertion/deletion but require sequential access."
-      backLink="/data-structures"
-      onReset={handleReset}
-      controls={controls}
-      complexity={{
-        time: "Access: O(n), Search: O(n), Insert: O(1)*, Delete: O(1)*",
-        space: "O(n)"
-      }}
-      operations={[
-        "Insert nodes at any position (head, middle, or tail)",
-        "Delete nodes by clicking the × button",
-        "Search for values with animated traversal",
-        "Observe pointer connections between nodes"
-      ]}
-    >
-      <div className="w-full max-w-7xl">
-        {/* Linked List Visualization */}
-        <div className="relative min-h-[320px] bg-surface-elevated rounded-xl border border-subtle p-8 overflow-x-auto">
-          {nodes.length === 0 ? (
-            <div className="flex items-center justify-center h-48 text-muted">
-              <div className="text-center">
-                <div className="text-lg font-medium mb-2">Empty Linked List</div>
-                <div className="text-sm">Add some nodes to get started</div>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Linked List Visualization</h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Linked lists store data in nodes connected by pointers. They allow dynamic memory allocation and 
+            efficient insertion/deletion but require sequential access for traversal.
+          </p>
+        </div>
+
+        {/* Controls */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Insert Controls */}
+            <div className="space-y-4">
+              <label className="block text-sm font-semibold text-gray-700">Insert Node</label>
+              <div className="flex gap-3">
+                <input
+                  type="number"
+                  placeholder="Value"
+                  value={insertValue}
+                  onChange={(e) => setInsertValue(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e, 'insert')}
+                  disabled={isSearching}
+                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-colors disabled:bg-gray-100"
+                />
+                <input
+                  type="number"
+                  placeholder="Position"
+                  value={insertPosition}
+                  onChange={(e) => setInsertPosition(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e, 'insert')}
+                  disabled={isSearching}
+                  className="w-24 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-colors disabled:bg-gray-100"
+                />
+                <button
+                  onClick={handleInsert}
+                  disabled={!insertValue.trim() || !insertPosition.trim() || isSearching || parseInt(insertPosition) < 0 || parseInt(insertPosition) > nodes.length}
+                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Insert
+                </button>
+              </div>
+              <div className="text-sm text-gray-500">
+                Position range: 0 to {nodes.length} (0 = head, {nodes.length} = tail)
               </div>
             </div>
-          ) : (
-            <>
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                {/* Draw edges between nodes */}
-                {nodes.map((node, index) => {
-                  if (index < nodes.length - 1) {
-                    const pos1 = getNodePosition(index);
-                    const pos2 = getNodePosition(index + 1);
-                    const x1 = 60 + pos1.centerX + 40; // End of current node
-                    const y1 = 160;
-                    const x2 = 60 + pos2.centerX - 40; // Start of next node
-                    const y2 = 160;
-                    
-                    return (
-                      <AnimatedEdge
-                        key={`edge-${node.id}`}
-                        x1={x1}
-                        y1={y1}
-                        x2={x2}
-                        y2={y2}
-                        isDirected={true}
-                        isHighlighted={highlightedNode === node.id}
-                      />
-                    );
-                  }
-                  return null;
-                })}
-              </svg>
-              
-              {/* Nodes */}
-              <div className="relative" style={{ zIndex: 2 }}>
-                <AnimatePresence mode="popLayout">
-                  {nodes.map((node, index) => {
-                    const pos = getNodePosition(index);
-                    return (
-                      <motion.div
-                        key={node.id}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ 
-                          scale: 1, 
-                          opacity: 1,
-                          x: pos.x,
-                          y: 0
-                        }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        layout
-                        transition={{ 
-                          layout: { duration: 0.3 },
-                          default: { duration: 0.2 }
-                        }}
-                        className={`
-                          absolute w-20 h-20 border-2 rounded-xl cursor-pointer flex flex-col items-center justify-center
-                          transition-all duration-300 group select-none
-                          ${highlightedNode === node.id 
-                            ? 'bg-warning-light border-warning text-warning shadow-lg transform scale-105' 
-                            : searchResult === node.id
-                            ? 'bg-success-light border-success text-success shadow-lg transform scale-105'
-                            : 'bg-surface border-subtle text-primary hover:border-accent/50 hover:shadow-md'
-                          }
-                          ${isSearching && highlightedNode !== node.id ? 'opacity-60' : ''}
-                        `}
-                        style={{ left: 60, top: 120 }}
-                      >
+
+            {/* Search Controls */}
+            <div className="space-y-4">
+              <label className="block text-sm font-semibold text-gray-700">Search Node</label>
+              <div className="flex gap-3">
+                <input
+                  type="number"
+                  placeholder="Search Value"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e, 'search')}
+                  disabled={isSearching}
+                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-colors disabled:bg-gray-100"
+                />
+                <button
+                  onClick={animatedSearch}
+                  disabled={!searchValue.trim() || isSearching}
+                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  {isSearching ? 'Searching...' : 'Search'}
+                </button>
+              </div>
+              <div className="text-sm text-gray-500">
+                Sequential traversal from head to tail
+              </div>
+            </div>
+          </div>
+
+          {/* Reset Button */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={handleReset}
+              disabled={isSearching}
+              className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+            >
+              Reset List
+            </button>
+          </div>
+
+          {/* Status Messages */}
+          <div className="mt-6 space-y-3">
+            {highlightedNode && !isSearching && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <span className="text-green-700 font-semibold">✓ Accessed:</span>
+                <span className="text-green-600 ml-2">
+                  Node at position {nodes.findIndex(n => n.id === highlightedNode)} with value {nodes.find(n => n.id === highlightedNode)?.value}
+                </span>
+              </div>
+            )}
+
+            {searchResult === 'not-found' && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <span className="text-red-700 font-semibold">✗ Not Found:</span>
+                <span className="text-red-600 ml-2">{searchValue} not found in linked list</span>
+              </div>
+            )}
+
+            {searchResult && searchResult !== 'not-found' && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <span className="text-green-700 font-semibold">✓ Found:</span>
+                <span className="text-green-600 ml-2">
+                  {searchValue} found at position {nodes.findIndex(n => n.id === searchResult)}
+                </span>
+              </div>
+            )}
+            
+            {isSearching && currentSearchIndex !== null && (
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <span className="text-yellow-700 font-semibold">🔍 Searching:</span>
+                <span className="text-yellow-600 ml-2">
+                  Checking position {currentSearchIndex} (value: {nodes[currentSearchIndex]?.value})
+                </span>
+              </div>
+            )}
+
+            {lastOperation === 'insert' && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <span className="text-blue-700 font-semibold">✓ Inserted:</span>
+                <span className="text-blue-600 ml-2">Node added to linked list</span>
+              </div>
+            )}
+
+            {lastOperation === 'delete' && (
+              <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                <span className="text-orange-700 font-semibold">✓ Deleted:</span>
+                <span className="text-orange-600 ml-2">Node removed from linked list</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Linked List Visualization */}
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="flex justify-center items-center min-h-[240px] p-6 bg-gray-50 rounded-xl border-2 border-gray-200 overflow-x-auto">
+            {nodes.length === 0 ? (
+              <div className="text-center text-gray-500">
+                <div className="text-2xl font-bold mb-2">Empty Linked List</div>
+                <div className="text-lg">Insert nodes to get started</div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 min-w-max">
+                {nodes.map((node, index) => (
+                  <div key={node.id} className="flex items-center">
+                    {/* Node */}
+                    <div
+                      className={`
+                        relative group cursor-pointer select-none transition-all duration-300
+                        ${highlightedNode === node.id
+                          ? 'transform scale-110'
+                          : 'hover:scale-105'
+                        }
+                        ${isSearching && highlightedNode !== node.id ? 'opacity-50' : ''}
+                      `}
+                      onClick={() => handleAccess(node.id)}
+                      style={{ 
+                        cursor: isSearching ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <div className={`
+                        w-20 h-20 border-3 rounded-xl flex flex-col items-center justify-center
+                        transition-all duration-300 relative
+                        ${highlightedNode === node.id
+                          ? 'bg-yellow-100 border-yellow-400 text-yellow-800 shadow-lg'
+                          : searchResult === node.id
+                          ? 'bg-green-100 border-green-400 text-green-800 shadow-lg'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-green-300 hover:shadow-md'
+                        }
+                      `}>
                         <span className="font-bold text-lg">{node.value}</span>
-                        
+                        <span className="text-xs text-gray-500 font-medium">[{index}]</span>
+
                         {/* Delete button */}
                         {!isSearching && (
                           <button
@@ -344,58 +349,163 @@ export default function LinkedListVisualizer() {
                               e.stopPropagation();
                               handleDelete(node.id);
                             }}
-                            className="absolute -top-2 -right-2 w-6 h-6 bg-error text-inverse rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error-dark flex items-center justify-center"
+                            className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 flex items-center justify-center shadow-md"
                             title="Delete node"
                           >
                             ×
                           </button>
                         )}
-                        
-                        {/* Position indicator */}
-                        <span className="absolute -bottom-8 text-xs text-muted font-medium bg-surface-elevated px-2 py-1 rounded border border-subtle">
-                          pos: {index}
-                        </span>
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
+                      </div>
+                    </div>
+
+                    {/* Arrow to next node */}
+                    {index < nodes.length - 1 && (
+                      <div className="flex items-center mx-2">
+                        <div className="w-8 h-0.5 bg-gray-400"></div>
+                        <div className="w-0 h-0 border-l-4 border-l-gray-400 border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
+                      </div>
+                    )}
+
+                    {/* NULL pointer at the end */}
+                    {index === nodes.length - 1 && (
+                      <div className="flex items-center mx-2">
+                        <div className="w-8 h-0.5 bg-gray-400"></div>
+                        <div className="w-0 h-0 border-l-4 border-l-gray-400 border-t-2 border-t-transparent border-b-2 border-b-transparent ml-1"></div>
+                        <div className="ml-2 text-sm text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded border">
+                          NULL
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-              
-              {/* NULL pointer at the end */}
-              {nodes.length > 0 && (
-                <div 
-                  className="absolute text-sm text-muted font-mono bg-surface-elevated px-2 py-1 rounded border border-subtle"
-                  style={{ 
-                    left: 60 + getNodePosition(nodes.length).x + 20, 
-                    top: 155,
-                    zIndex: 2
-                  }}
-                >
-                  NULL
-                </div>
-              )}
-            </>
-          )}
-        </div>
-        
-        {/* List Info */}
-        <div className="mt-6 text-center space-y-3">
-          <div className="flex justify-center gap-6 text-sm">
-            <div className="text-secondary">
-              Length: <span className="font-semibold text-primary">{nodes.length}</span>
-            </div>
-            <div className="text-secondary">
-              Memory: <span className="font-semibold text-primary">Dynamic allocation</span>
-            </div>
+            )}
           </div>
-          <div className="text-xs text-muted max-w-md mx-auto">
-            Sequential access • Pointer-based traversal • Dynamic node allocation
-          </div>
-          <div className="text-xs text-muted">
-            *Insert/Delete are O(1) when you have a reference to the node, O(n) when searching for position
+
+          {/* List Info */}
+          <div className="mt-8 text-center space-y-4">
+            <div className="flex justify-center gap-8 text-lg">
+              <div className="text-gray-700">
+                Length: <span className="font-bold text-green-600">{nodes.length}</span>
+              </div>
+              <div className="text-gray-700">
+                Memory: <span className="font-bold text-green-600">Dynamic allocation</span>
+              </div>
+              <div className="text-gray-700">
+                Head: <span className="font-bold text-green-600">{nodes.length > 0 ? `[0] = ${nodes[0].value}` : 'NULL'}</span>
+              </div>
+            </div>
+            <div className="text-sm text-gray-500 max-w-2xl mx-auto">
+              Sequential access • Pointer-based traversal • Dynamic node allocation
+            </div>
+
+            {/* Complexity Information */}
+            <div className="mt-6 bg-gray-50 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">Time & Space Complexity</h3>
+              <div className="text-sm text-gray-600 space-y-1">
+                <div><strong>Access:</strong> O(n) - Sequential traversal required</div>
+                <div><strong>Search:</strong> O(n) - Linear search through nodes</div>
+                <div><strong>Insert/Delete:</strong> O(1) with reference, O(n) to find position</div>
+                <div><strong>Space:</strong> O(n) - Linear space for n nodes</div>
+              </div>
+            </div>
+
+            {/* Operations Guide */}
+            <div className="mt-4 bg-green-50 rounded-lg p-4">
+              <h3 className="font-semibold text-green-800 mb-2">Linked List Operations</h3>
+              <div className="text-sm text-green-700 space-y-1 text-left">
+                <div>• <strong>Access:</strong> Click any node to access it (requires traversal)</div>
+                <div>• <strong>Insert:</strong> Add nodes at specific positions (head, middle, or tail)</div>
+                <div>• <strong>Search:</strong> Find nodes using animated sequential traversal</div>
+                <div>• <strong>Delete:</strong> Remove nodes by clicking the × button</div>
+              </div>
+            </div>
+
+            {/* Python Code Example */}
+            <div className="mt-4 bg-blue-50 rounded-lg p-4">
+              <h3 className="font-semibold text-blue-800 mb-2">Python Implementation Example</h3>
+              <div className="text-left">
+                <pre className="text-sm text-blue-700 font-mono bg-blue-100 p-3 rounded overflow-x-auto">
+{`class ListNode:
+    def __init__(self, value=0, next=None):
+        self.value = value
+        self.next = next
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def insert_at_position(self, position, value):
+        """Insert node at specific position - O(n)"""
+        if position < 0 or position > self.size:
+            raise IndexError("Position out of bounds")
+
+        new_node = ListNode(value)
+
+        if position == 0:  # Insert at head
+            new_node.next = self.head
+            self.head = new_node
+        else:
+            current = self.head
+            for _ in range(position - 1):
+                current = current.next
+            new_node.next = current.next
+            current.next = new_node
+
+        self.size += 1
+
+    def delete_at_position(self, position):
+        """Delete node at position - O(n)"""
+        if position < 0 or position >= self.size:
+            raise IndexError("Position out of bounds")
+
+        if position == 0:  # Delete head
+            self.head = self.head.next
+        else:
+            current = self.head
+            for _ in range(position - 1):
+                current = current.next
+            current.next = current.next.next
+
+        self.size -= 1
+
+    def search(self, value):
+        """Search for value - O(n)"""
+        current = self.head
+        position = 0
+
+        while current:
+            if current.value == value:
+                return position
+            current = current.next
+            position += 1
+
+        return -1  # Not found
+
+    def display(self):
+        """Display the linked list"""
+        result = []
+        current = self.head
+        while current:
+            result.append(str(current.value))
+            current = current.next
+        return " -> ".join(result) + " -> NULL"
+
+# Usage example
+ll = LinkedList()
+ll.insert_at_position(0, 10)  # Insert at head
+ll.insert_at_position(1, 20)  # Insert at tail
+ll.insert_at_position(1, 15)  # Insert in middle
+
+print(ll.display())  # Output: 10 -> 15 -> 20 -> NULL
+print(f"Search 15: position {ll.search(15)}")  # Output: 1`}
+                </pre>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </VisualizationLayout>
+    </div>
   );
 }

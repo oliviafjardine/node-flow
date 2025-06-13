@@ -87,7 +87,7 @@ export default function ArrayVisualizer() {
     setSearchValue('');
   };
 
-  const handleKeyPress = (e, action) => {
+  const handleKeyPress = (e: React.KeyboardEvent, action: string) => {
     if (e.key === 'Enter') {
       if (action === 'insert') {
         handleInsert();
@@ -326,6 +326,50 @@ export default function ArrayVisualizer() {
                 <div>• <strong>Insert:</strong> Add elements at specific positions (elements shift right)</div>
                 <div>• <strong>Search:</strong> Find elements using animated linear search</div>
                 <div>• <strong>Delete:</strong> Remove elements by clicking the × button (elements shift left)</div>
+              </div>
+            </div>
+
+            {/* Python Code Example */}
+            <div className="mt-4 bg-green-50 rounded-lg p-4">
+              <h3 className="font-semibold text-green-800 mb-2">Python Implementation Example</h3>
+              <div className="text-left">
+                <pre className="text-sm text-green-700 font-mono bg-green-100 p-3 rounded overflow-x-auto">
+{`# Array operations in Python using lists
+arr = [10, 20, 30, 40, 50]
+
+# Access element by index - O(1)
+element = arr[2]  # Gets 30
+print(f"Element at index 2: {element}")
+
+# Insert element at specific position - O(n)
+arr.insert(2, 25)  # Insert 25 at index 2
+print(f"After insert: {arr}")  # [10, 20, 25, 30, 40, 50]
+
+# Search for element - O(n)
+def linear_search(arr, target):
+    for i, value in enumerate(arr):
+        if value == target:
+            return i
+    return -1
+
+index = linear_search(arr, 30)
+print(f"Index of 30: {index}")
+
+# Delete element by index - O(n)
+if index != -1:
+    deleted = arr.pop(index)
+    print(f"Deleted {deleted}, array: {arr}")
+
+# Delete by value - O(n)
+if 25 in arr:
+    arr.remove(25)
+    print(f"After removing 25: {arr}")
+
+# Array properties
+print(f"Length: {len(arr)}")
+print(f"Memory usage: {len(arr) * 4} bytes (approx)")
+print(f"Max index: {len(arr) - 1}")`}
+                </pre>
               </div>
             </div>
           </div>
