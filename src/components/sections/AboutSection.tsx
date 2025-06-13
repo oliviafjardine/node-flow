@@ -105,8 +105,8 @@ const About: React.FC<AboutProps> = ({ isHome = false }) => {
             <h2 className="text-3xl font-bold text-primary mb-6">Our Mission</h2>
             <div className="space-y-4 text-secondary leading-relaxed">
               <p>
-                <strong className="text-primary">Traditional computer science education has a problem.</strong>
-                Students often struggle with abstract concepts like algorithms and data structures because
+                <strong className="text-primary">While learning computer science, </strong>
+                students often struggle with abstract concepts like algorithms and data structures because
                 they're taught through static diagrams and dense textbooks.
               </p>
               <p>
@@ -132,8 +132,8 @@ const About: React.FC<AboutProps> = ({ isHome = false }) => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-success-light rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-success" />
+                <div className="w-12 h-12 bg-accent-light rounded-lg flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-accent" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-primary">Engaging Experience</h3>

@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
 
         {/* Content separator for better contrast */}
         <div className="lg:border-l border-subtle">
-          <main className="min-h-screen bg-surface">
+          <main className="min-h-screen bg-main-content">
             {children}
           </main>
 

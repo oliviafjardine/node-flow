@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Card from "../shared/Card";
-import AlgorithmsComparison from "./AlgorithmsComparison";
 import TopicRequestModal from "../shared/TopicRequestModal";
-import { LayoutGrid, Table, Zap, Plus } from "lucide-react";
+import { Zap, Plus } from "lucide-react";
 
 const algorithms = [
   {
@@ -125,22 +124,10 @@ const algorithms = [
     link: "/visualizations/dijkstra-bellman",
     tags: ["Shortest Path"],
   },
-  {
-    title: "Topological Sorting",
-    description: "Order nodes in a DAG.",
-    timeComplexity: {
-      access: "O(1)",
-      search: "O(V + E)",
-      insert: "O(1)",
-      delete: "O(1)",
-    },
-    link: "/visualizations/topological-sorting",
-    tags: ["DAG", "Topo"],
-  },
+
 ];
 
 const AlgorithmsSection: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'cards' | 'comparison'>('cards');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -160,56 +147,27 @@ const AlgorithmsSection: React.FC = () => {
             </p>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center gap-1 bg-surface-elevated rounded-xl p-1 border border-subtle shadow-custom-sm">
+        </div>
+
+        {/* Content */}
+        <div className="space-y-12">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {algorithms.map((algo) => (
+              <Card key={algo.title} {...algo} />
+            ))}
+          </div>
+
+          {/* Can't find topic link */}
+          <div className="text-center pt-6 border-t border-subtle">
             <button
-              onClick={() => setViewMode('cards')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                viewMode === 'cards'
-                  ? 'bg-accent text-inverse shadow-custom-sm'
-                  : 'text-secondary hover:text-primary hover:bg-surface'
-              }`}
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-surface-elevated border border-subtle rounded text-secondary"
             >
-              <LayoutGrid className="w-5 h-5" />
-              Cards
-            </button>
-            <button
-              onClick={() => setViewMode('comparison')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                viewMode === 'comparison'
-                  ? 'bg-accent text-inverse shadow-custom-sm'
-                  : 'text-secondary hover:text-primary hover:bg-surface'
-              }`}
-            >
-              <Table className="w-5 h-5" />
-              Compare
+              <Plus className="w-4 h-4" />
+              <span>Can't find an algorithm? Request it here</span>
             </button>
           </div>
         </div>
-
-        {/* Content based on view mode */}
-        {viewMode === 'cards' ? (
-          <div className="space-y-16">
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {algorithms.map((algo) => (
-                <Card key={algo.title} {...algo} />
-              ))}
-            </div>
-
-            {/* Can't find topic link */}
-            <div className="text-center pt-8 border-t border-subtle">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-surface-elevated border border-subtle rounded-xl text-secondary hover:text-accent hover:border-accent/30 transition-all duration-200 shadow-custom-sm hover:shadow-custom-md"
-              >
-                <Plus className="w-5 h-5" />
-                <span className="font-medium">Can't find an algorithm? Request it here</span>
-              </button>
-            </div>
-          </div>
-        ) : (
-          <AlgorithmsComparison />
-        )}
 
         {/* Topic Request Modal */}
         <TopicRequestModal

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Card from "../shared/Card";
-import DataStructuresComparison from "./DataStructuresComparison";
 import TopicRequestModal from "../shared/TopicRequestModal";
 import {
   Grid,
@@ -10,11 +9,7 @@ import {
   Hash,
   Share2,
   TreeDeciduous,
-  ShieldCheck,
   ArrowUpDown,
-  Search,
-  LayoutGrid,
-  Table,
   Plus,
 } from "lucide-react";
 
@@ -83,14 +78,7 @@ const dataStructures = [
     tags: ["Binary", "Sorted"],
     icon: <TreeDeciduous className="w-6 h-6 text-heading-1" />,
   },
-  {
-    title: "Self-balancing Trees",
-    description: "AVL, Red-Black, and Splay trees auto-balance to keep operations fast.",
-    timeComplexity: { access: "O(log n)", search: "O(log n)", insert: "O(log n)", delete: "O(log n)" },
-    link: "/visualizations/self-balancing-trees",
-    tags: ["AVL", "Red-Black", "Splay"],
-    icon: <ShieldCheck className="w-6 h-6 text-heading-1" />,
-  },
+
   {
     title: "Heaps",
     description: "Tree-based structures for fast min/max retrieval.",
@@ -100,17 +88,25 @@ const dataStructures = [
     icon: <ArrowUpDown className="w-6 h-6 text-heading-1" />,
   },
   {
-    title: "Tries",
-    description: "Prefix trees used in string search and autocomplete.",
-    timeComplexity: { access: "O(L)", search: "O(L)", insert: "O(L)", delete: "O(L)" },
-    link: "/visualizations/tries",
-    tags: ["Prefix Tree", "Strings"],
-    icon: <Search className="w-6 h-6 text-heading-1" />,
+    title: "Hash Tables",
+    description: "Key-value pairs with O(1) average access time using hash functions.",
+    timeComplexity: { access: "O(1)", search: "O(1)", insert: "O(1)", delete: "O(1)" },
+    link: "/visualizations/hash-tables",
+    tags: ["Hash", "Map", "Dictionary"],
+    icon: <Hash className="w-6 h-6 text-heading-1" />,
   },
+  {
+    title: "Graphs",
+    description: "Networks of vertices connected by edges, representing relationships.",
+    timeComplexity: { access: "O(1)", search: "O(V+E)", insert: "O(1)", delete: "O(E)" },
+    link: "/visualizations/graphs",
+    tags: ["Graph", "Network", "Vertices"],
+    icon: <Share2 className="w-6 h-6 text-heading-1" />,
+  },
+
 ];
 
 const DataStructuresSection: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'cards' | 'comparison'>('cards');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -130,56 +126,27 @@ const DataStructuresSection: React.FC = () => {
             </p>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center gap-1 bg-surface-elevated rounded-xl p-1 border border-subtle shadow-custom-sm">
+        </div>
+
+        {/* Content */}
+        <div className="space-y-12">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {dataStructures.map((ds) => (
+              <Card key={ds.title} {...ds} />
+            ))}
+          </div>
+
+          {/* Can't find topic link */}
+          <div className="text-center pt-6 border-t border-subtle">
             <button
-              onClick={() => setViewMode('cards')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                viewMode === 'cards'
-                  ? 'bg-accent text-inverse shadow-custom-sm'
-                  : 'text-secondary hover:text-primary hover:bg-surface'
-              }`}
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-surface-elevated border border-subtle rounded text-secondary"
             >
-              <LayoutGrid className="w-5 h-5" />
-              Cards
-            </button>
-            <button
-              onClick={() => setViewMode('comparison')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                viewMode === 'comparison'
-                  ? 'bg-accent text-inverse shadow-custom-sm'
-                  : 'text-secondary hover:text-primary hover:bg-surface'
-              }`}
-            >
-              <Table className="w-5 h-5" />
-              Compare
+              <Plus className="w-4 h-4" />
+              <span>Can't find a data structure? Request it here</span>
             </button>
           </div>
         </div>
-
-        {/* Content based on view mode */}
-        {viewMode === 'cards' ? (
-          <div className="space-y-16">
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {dataStructures.map((ds) => (
-                <Card key={ds.title} {...ds} />
-              ))}
-            </div>
-
-            {/* Can't find topic link */}
-            <div className="text-center pt-8 border-t border-subtle">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-surface-elevated border border-subtle rounded-xl text-secondary hover:text-accent hover:border-accent/30 transition-all duration-200 shadow-custom-sm hover:shadow-custom-md"
-              >
-                <Plus className="w-5 h-5" />
-                <span className="font-medium">Can't find a data structure? Request it here</span>
-              </button>
-            </div>
-          </div>
-        ) : (
-          <DataStructuresComparison />
-        )}
 
         {/* Topic Request Modal */}
         <TopicRequestModal

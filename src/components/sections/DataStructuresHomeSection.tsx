@@ -6,7 +6,7 @@ const DataStructuresHomeSection: React.FC = () => {
   return (
     <Link
       to="/data-structures"
-      className="group block h-full bg-surface rounded-2xl border border-subtle hover:border-accent/30 p-10 transition-all duration-300 hover:shadow-custom-lg hover:-translate-y-1"
+      className="group block h-full bg-main-content rounded-2xl border border-subtle hover:border-accent/30 p-10 transition-all duration-300 hover:shadow-custom-lg hover:-translate-y-1"
     >
       <div className="flex flex-col items-center text-center h-full">
         <div className="w-24 h-24 bg-gradient-to-br from-accent-light to-accent/10 border border-accent/20 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-105 transition-transform duration-300">

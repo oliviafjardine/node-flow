@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import VisualizationLayout from './shared/VisualizationLayout';
 
 interface StackItem {
   id: string;
@@ -28,7 +26,7 @@ export default function StackVisualizer() {
 
   const handlePush = () => {
     const value = parseInt(pushValue);
-    if (isNaN(value)) return;
+    if (isNaN(value) || pushValue.trim() === '') return;
 
     const newItem: StackItem = {
       id: `item-${Date.now()}`,
@@ -52,8 +50,11 @@ export default function StackVisualizer() {
   };
 
   const handlePeek = () => {
-    if (stack.length === 0) return null;
-    return stack[stack.length - 1].value;
+    if (stack.length === 0) {
+      alert('Stack is empty - nothing to peek at!');
+      return;
+    }
+    alert(`Top element: ${stack[stack.length - 1].value}`);
   };
 
   const handleReset = () => {
@@ -63,206 +64,209 @@ export default function StackVisualizer() {
     setPoppedValue(null);
   };
 
-  const controls = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-primary">Push Element</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Value to push"
-              value={pushValue}
-              onChange={(e) => setPushValue(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handlePush()}
-              className="flex-1 px-3 py-2 border border-subtle rounded-lg bg-surface text-primary placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-            />
-            <button
-              onClick={handlePush}
-              disabled={!pushValue}
-              className="px-4 py-2 bg-accent text-inverse rounded-lg hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Push
-            </button>
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-primary">Stack Operations</label>
-          <div className="flex gap-2">
-            <button
-              onClick={handlePop}
-              disabled={stack.length === 0}
-              className="flex-1 px-4 py-2 bg-error text-inverse rounded-lg hover:bg-error-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Pop
-            </button>
-            <button
-              onClick={() => {
-                const topValue = handlePeek();
-                if (topValue !== null) {
-                  alert(`Top element: ${topValue}`);
-                } else {
-                  alert('Stack is empty');
-                }
-              }}
-              className="flex-1 px-4 py-2 bg-warning text-inverse rounded-lg hover:bg-warning-dark transition-colors"
-            >
-              Peek
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Status Messages */}
-      <div className="space-y-2">
-        {lastOperation === 'push' && (
-          <div className="p-3 bg-success-light border border-success/20 rounded-lg">
-            <span className="text-success font-medium">Pushed:</span> Added element to top of stack
-          </div>
-        )}
-        
-        {lastOperation === 'pop' && poppedValue !== null && (
-          <div className="p-3 bg-error-light border border-error/20 rounded-lg">
-            <span className="text-error font-medium">Popped:</span> Removed {poppedValue} from top of stack
-          </div>
-        )}
-        
-        {stack.length === 0 && (
-          <div className="p-3 bg-warning-light border border-warning/20 rounded-lg">
-            <span className="text-warning font-medium">Empty Stack:</span> No elements to pop
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handlePush();
+    }
+  };
 
   return (
-    <VisualizationLayout
-      title="Stack Visualization"
-      description="Stacks follow the Last-In-First-Out (LIFO) principle. Elements are added and removed from the top only, making them perfect for function calls, undo operations, and expression parsing."
-      backLink="/data-structures"
-      onReset={handleReset}
-      controls={controls}
-      complexity={{
-        time: "Push: O(1), Pop: O(1), Peek: O(1)",
-        space: "O(n)"
-      }}
-      operations={[
-        "Push: Add elements to the top of the stack",
-        "Pop: Remove and return the top element",
-        "Peek: View the top element without removing it",
-        "Stack follows LIFO (Last-In-First-Out) principle"
-      ]}
-    >
-      <div className="w-full max-w-2xl">
-        {/* Stack Visualization */}
-        <div className="flex flex-col items-center justify-end min-h-[400px] relative">
-          {/* Stack Base */}
-          <div className="w-32 h-4 bg-subtle border-2 border-subtle rounded-b-lg"></div>
-          
-          {/* Stack Elements */}
-          <div className="flex flex-col-reverse items-center">
-            <AnimatePresence>
-              {stack.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ 
-                    scale: 0, 
-                    opacity: 0, 
-                    y: -50 
-                  }}
-                  animate={{ 
-                    scale: 1, 
-                    opacity: 1, 
-                    y: 0 
-                  }}
-                  exit={{ 
-                    scale: 0, 
-                    opacity: 0, 
-                    y: -50,
-                    transition: { duration: 0.2 }
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30
-                  }}
-                  className={`
-                    w-32 h-12 border-2 flex items-center justify-center font-bold text-lg
-                    transition-all duration-200
-                    ${index === stack.length - 1 
-                      ? 'bg-accent-light border-accent text-accent shadow-lg' 
-                      : 'bg-surface-elevated border-subtle text-primary'
-                    }
-                    ${index === 0 ? 'rounded-b-lg' : ''}
-                  `}
-                  style={{
-                    marginTop: index === 0 ? 0 : -2 // Overlap borders
-                  }}
-                >
-                  {item.value}
-                  
-                  {/* Top indicator */}
-                  {index === stack.length - 1 && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="absolute left-full ml-4 text-sm text-accent font-medium"
-                    >
-                      ← TOP
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-          
-          {/* Empty Stack Message */}
-          {stack.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center text-muted"
-            >
-              <div className="text-center">
-                <div className="text-lg font-medium">Empty Stack</div>
-                <div className="text-sm">Push elements to get started</div>
-              </div>
-            </motion.div>
-          )}
-          
-          {/* Stack Pointer */}
-          {stack.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute right-full mr-8 flex items-center"
-              style={{ 
-                top: `${400 - (stack.length * 48) - 24}px` // Position at top element
-              }}
-            >
-              <div className="text-sm text-secondary font-medium">Stack Pointer</div>
-              <div className="w-8 h-0.5 bg-accent ml-2"></div>
-            </motion.div>
-          )}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Stack Visualization</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Stacks follow the Last-In-First-Out (LIFO) principle. Elements are added and removed from the top only, 
+            making them perfect for function calls, undo operations, and expression parsing.
+          </p>
         </div>
-        
-        {/* Stack Info */}
-        <div className="mt-8 text-center space-y-2">
-          <div className="text-sm text-secondary">
-            Stack Size: <span className="font-semibold text-primary">{stack.length}</span>
-          </div>
-          <div className="text-xs text-muted">
-            LIFO Structure • Top-only access • O(1) operations
-          </div>
-          {stack.length > 0 && (
-            <div className="text-sm text-accent">
-              Top Element: <span className="font-semibold">{stack[stack.length - 1].value}</span>
+
+        {/* Controls */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Push Controls */}
+            <div className="space-y-3">
+              <label className="block text-sm font-semibold text-gray-700">Push Element</label>
+              <div className="flex gap-3">
+                <input
+                  type="number"
+                  placeholder="Enter a number"
+                  value={pushValue}
+                  onChange={(e) => setPushValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
+                />
+                <button
+                  onClick={handlePush}
+                  disabled={!pushValue.trim()}
+                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Push
+                </button>
+              </div>
             </div>
-          )}
+            
+            {/* Stack Operations */}
+            <div className="space-y-3">
+              <label className="block text-sm font-semibold text-gray-700">Stack Operations</label>
+              <div className="flex gap-3">
+                <button
+                  onClick={handlePop}
+                  disabled={stack.length === 0}
+                  className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Pop
+                </button>
+                <button
+                  onClick={handlePeek}
+                  className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium"
+                >
+                  Peek
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Status Messages */}
+          <div className="mt-6 space-y-3">
+            {lastOperation === 'push' && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <span className="text-green-700 font-semibold">✓ Pushed:</span>
+                <span className="text-green-600 ml-2">Added element to top of stack</span>
+              </div>
+            )}
+            
+            {lastOperation === 'pop' && poppedValue !== null && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <span className="text-red-700 font-semibold">✓ Popped:</span>
+                <span className="text-red-600 ml-2">Removed {poppedValue} from top of stack</span>
+              </div>
+            )}
+            
+            {stack.length === 0 && (
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <span className="text-yellow-700 font-semibold">⚠ Empty Stack:</span>
+                <span className="text-yellow-600 ml-2">No elements to pop</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Visualization Area */}
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="flex justify-center">
+            <div className="relative">
+              {/* Stack Visualization Container */}
+              <div className="flex flex-col items-center justify-end min-h-96 relative">
+                
+                {/* Stack Base */}
+                <div className="w-40 h-6 bg-gray-300 border-2 border-gray-400 rounded-b-lg mb-1"></div>
+                
+                {/* Stack Elements */}
+                <div className="flex flex-col-reverse items-center absolute bottom-6">
+                  {stack.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className={`
+                        w-40 h-14 border-2 flex items-center justify-center font-bold text-xl
+                        transition-all duration-300 relative
+                        ${index === stack.length - 1 
+                          ? 'bg-blue-100 border-blue-400 text-blue-800 shadow-lg transform scale-105' 
+                          : 'bg-gray-50 border-gray-300 text-gray-700'
+                        }
+                        ${index === 0 ? 'rounded-b-lg' : ''}
+                        ${index === stack.length - 1 ? 'rounded-t-lg' : ''}
+                      `}
+                      style={{
+                        marginTop: index === 0 ? 0 : -2,
+                        zIndex: stack.length - index
+                      }}
+                    >
+                      {item.value}
+                      
+                      {/* Top indicator */}
+                      {index === stack.length - 1 && (
+                        <div className="absolute left-full ml-6 text-sm text-blue-600 font-bold whitespace-nowrap flex items-center">
+                          <div className="w-4 h-0.5 bg-blue-600 mr-2"></div>
+                          TOP (LIFO)
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Empty Stack Message */}
+                {stack.length === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-gray-500">
+                      <div className="text-2xl font-bold mb-2">Empty Stack</div>
+                      <div className="text-lg">Push elements to get started</div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Stack Pointer Arrow */}
+                {stack.length > 0 && (
+                  <div 
+                    className="absolute right-full mr-12 flex items-center"
+                    style={{ 
+                      bottom: `${24 + (stack.length * 56) - 28}px`
+                    }}
+                  >
+                    <div className="text-sm text-gray-600 font-semibold whitespace-nowrap">Stack Pointer</div>
+                    <div className="w-8 h-0.5 bg-blue-500 ml-3"></div>
+                    <div className="w-0 h-0 border-l-4 border-l-blue-500 border-t-2 border-t-transparent border-b-2 border-b-transparent"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {/* Stack Info */}
+          <div className="mt-8 text-center space-y-3 border-t pt-6">
+            <div className="text-lg text-gray-700">
+              Stack Size: <span className="font-bold text-blue-600">{stack.length}</span>
+            </div>
+            <div className="text-sm text-gray-500">
+              LIFO Structure • Top-only access • O(1) operations
+            </div>
+            {stack.length > 0 && (
+              <div className="text-lg text-blue-600">
+                Top Element: <span className="font-bold">{stack[stack.length - 1].value}</span>
+              </div>
+            )}
+            
+            {/* Complexity Information */}
+            <div className="mt-6 bg-gray-50 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">Time & Space Complexity</h3>
+              <div className="text-sm text-gray-600 space-y-1">
+                <div><strong>Push:</strong> O(1) - Constant time</div>
+                <div><strong>Pop:</strong> O(1) - Constant time</div>
+                <div><strong>Peek:</strong> O(1) - Constant time</div>
+                <div><strong>Space:</strong> O(n) - Linear space for n elements</div>
+              </div>
+            </div>
+            
+            {/* Operations Guide */}
+            <div className="mt-4 bg-blue-50 rounded-lg p-4">
+              <h3 className="font-semibold text-blue-800 mb-2">Stack Operations</h3>
+              <div className="text-sm text-blue-700 space-y-1 text-left">
+                <div>• <strong>Push:</strong> Add elements to the top of the stack</div>
+                <div>• <strong>Pop:</strong> Remove and return the top element</div>
+                <div>• <strong>Peek:</strong> View the top element without removing it</div>
+                <div>• <strong>LIFO:</strong> Last-In-First-Out principle</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </VisualizationLayout>
+    </div>
   );
 }

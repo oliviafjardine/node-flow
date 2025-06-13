@@ -5,25 +5,25 @@
     --color-bg: 0 0% 98%;
     --color-surface: 0 0% 100%;
     --color-surface-elevated: 0 0% 99%;
+
+    /* Main content area - light gray theme */
+    --color-main-content: 0 0% 95%;
     --color-border: 220 13% 91%;
-    --color-border-subtle: 220 13% 95%;
+    --color-border-subtle: 220 13% 91%;
 
     /* Text Colors - optimized for light theme */
     --color-text-primary: 220 9% 15%;
     --color-text-secondary: 220 9% 46%;
     --color-text-tertiary: 220 9% 65%;
-    --color-text-muted: 220 9% 75%;
+    --color-text-muted: 220 9% 60%;
     --color-text-inverse: 0 0% 100%;
 
     /* Brand Colors - professional blue */
     --color-primary: 217 91% 60%;
-    --color-primary-hover: 217 91% 55%;
     --color-primary-light: 217 91% 96%;
-    --color-primary-dark: 217 91% 45%;
 
     /* Blue Accent System */
     --color-accent: 217 91% 60%;
-    --color-accent-hover: 217 91% 55%;
     --color-accent-light: 217 91% 96%;
     --color-accent-muted: 217 91% 85%;
 
@@ -35,23 +35,7 @@
     --color-error: 0 84% 60%;
     --color-error-light: 0 84% 96%;
 
-    /* Complexity Colors - professional system */
-    --color-excellent: 142 76% 45%;
-    --color-excellent-light: 142 76% 96%;
-    --color-good: 217 91% 60%;
-    --color-good-light: 217 91% 96%;
-    --color-fair: 38 92% 50%;
-    --color-fair-light: 38 92% 96%;
-    --color-acceptable: 25 95% 50%;
-    --color-acceptable-light: 25 95% 96%;
-    --color-poor: 0 84% 60%;
-    --color-poor-light: 0 84% 96%;
 
-    /* Shadows - softer for better visual hierarchy */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @layer utilities {
@@ -64,7 +48,9 @@
     }
     .bg-surface-elevated {
         background-color: hsl(var(--color-surface-elevated));
-        box-shadow: var(--shadow-sm);
+    }
+    .bg-main-content {
+        background-color: hsl(var(--color-main-content));
     }
 
     /* Text Colors */
@@ -94,9 +80,7 @@
     .bg-brand-light {
         background-color: hsl(var(--color-primary-light));
     }
-    .bg-brand-dark {
-        background-color: hsl(var(--color-primary-dark));
-    }
+
 
     /* Accent Colors - simplified blue system */
     .text-accent {
@@ -120,74 +104,14 @@
         border-color: hsl(var(--color-border-subtle));
     }
 
-    /* Complexity Colors */
-    .complexity-excellent {
-        background-color: hsl(var(--color-excellent-light));
-        color: hsl(var(--color-excellent));
-        border-color: hsl(var(--color-excellent));
-    }
-    .complexity-good {
-        background-color: hsl(var(--color-good-light));
-        color: hsl(var(--color-good));
-        border-color: hsl(var(--color-good));
-    }
-    .complexity-fair {
-        background-color: hsl(var(--color-fair-light));
-        color: hsl(var(--color-fair));
-        border-color: hsl(var(--color-fair));
-    }
-    .complexity-acceptable {
-        background-color: hsl(var(--color-acceptable-light));
-        color: hsl(var(--color-acceptable));
-        border-color: hsl(var(--color-acceptable));
-    }
-    .complexity-poor {
-        background-color: hsl(var(--color-poor-light));
-        color: hsl(var(--color-poor));
-        border-color: hsl(var(--color-poor));
-    }
 
-    /* Shadows */
-    .shadow-custom-sm { box-shadow: var(--shadow-sm); }
-    .shadow-custom-md { box-shadow: var(--shadow-md); }
-    .shadow-custom-lg { box-shadow: var(--shadow-lg); }
-    .shadow-custom-xl { box-shadow: var(--shadow-xl); }
 
-  @keyframes fade-in {
-      from {
-        opacity: 0;
-        transform: translateY(0);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    @keyframes fade-in-left {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
 
-    .fade-in {
-      animation: fade-in 1s ease-out forwards;
-    }
-    .fade-in-left {
-      animation: fade-in-left 0.75s ease-out forwards;
-    }
+
+
 }
 
-/* ==== Components Layer: Reusable Classes ==== */
-@layer components {
-    .section-outer {
-      @apply mt-60 mb-20 mx-10;
-    }
-}
+
 
 
 
@@ -270,6 +194,3 @@ p {
   line-height: 1.6;
 }
 
-.social-icon {
-  @apply h-6 w-6 hover:opacity-75 transition duration-150;
-}

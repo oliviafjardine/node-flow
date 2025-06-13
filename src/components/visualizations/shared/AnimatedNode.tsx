@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 interface AnimatedNodeProps {
   value: string | number;
@@ -50,27 +49,12 @@ const AnimatedNode: React.FC<AnimatedNodeProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ 
-        scale: 1, 
-        opacity: 1,
-        x,
-        y
-      }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }}
+    <div
       className={`
         absolute border-2 rounded-full flex items-center justify-center font-semibold
-        cursor-pointer select-none transition-all duration-200
+        cursor-pointer select-none
         ${sizeClasses[size]}
         ${colorClasses[getNodeColor()]}
-        ${onClick ? 'hover:shadow-lg' : ''}
         ${className}
       `}
       onClick={onClick}
@@ -80,7 +64,7 @@ const AnimatedNode: React.FC<AnimatedNodeProps> = ({
     >
       <span>{value}</span>
       {children}
-    </motion.div>
+    </div>
   );
 };
 

@@ -50,24 +50,14 @@ const dataStructures = [
     timeComplexity: { access: "O(log n)", search: "O(log n)", insert: "O(log n)", delete: "O(log n)" },
     tags: ["Binary", "Sorted"],
   },
-  {
-    title: "Self-balancing Trees",
-    description: "AVL, Red-Black, and Splay trees auto-balance to keep operations fast.",
-    timeComplexity: { access: "O(log n)", search: "O(log n)", insert: "O(log n)", delete: "O(log n)" },
-    tags: ["AVL", "Red-Black", "Splay"],
-  },
+
   {
     title: "Heaps",
     description: "Tree-based structures for fast min/max retrieval.",
     timeComplexity: { access: "O(1)", search: "O(n)", insert: "O(log n)", delete: "O(log n)" },
     tags: ["Priority Queue", "Binary Heap"],
   },
-  {
-    title: "Tries",
-    description: "Prefix trees used in string search and autocomplete.",
-    timeComplexity: { access: "O(L)", search: "O(L)", insert: "O(L)", delete: "O(L)" },
-    tags: ["Prefix Tree", "Strings"],
-  },
+
 ];
 
 const DataStructuresComparison: React.FC = () => {

@@ -9,7 +9,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative bg-gradient-to-br from-surface via-surface-elevated to-accent-light py-24 lg:py-32">
+    <section className="relative bg-gradient-to-br from-surface via-surface-elevated to-accent-light py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Content */}
@@ -37,7 +37,7 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-6">
               <Link
                 to="/data-structures"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-accent text-inverse rounded-xl font-semibold hover:bg-accent-hover transition-all duration-200 shadow-custom-md hover:shadow-custom-lg"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-accent text-inverse rounded font-semibold"
               >
                 Start Learning
                 <ArrowRight className="w-5 h-5" />
@@ -45,7 +45,7 @@ const Hero = () => {
 
               <Link
                 to="/about"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 border-2 border-accent text-accent rounded-xl font-semibold hover:bg-accent-light transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 border-2 border-accent text-accent rounded font-semibold"
               >
                 Learn More
               </Link>

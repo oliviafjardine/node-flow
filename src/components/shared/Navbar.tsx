@@ -59,13 +59,13 @@ const Navbar = () => {
                 <Link
                   key={to}
                   to={to}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded ${
                     isActive
                       ? 'bg-brand-light text-brand border border-brand/20'
-                      : 'text-secondary hover:text-primary hover:bg-surface-elevated'
+                      : 'text-secondary'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary group-hover:text-primary'}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary'}`} />
                   <span className="font-medium">{label}</span>
                   {isActive && <ChevronRight className="w-4 h-4 ml-auto text-brand" />}
                 </Link>
@@ -95,7 +95,7 @@ const Navbar = () => {
 
           <button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-lg hover:bg-surface-elevated transition-colors"
+            className="p-2 rounded relative z-60"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -105,51 +105,43 @@ const Navbar = () => {
             )}
           </button>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black/50 z-40" 
+              onClick={toggleMobileMenu}
+            />
+            
+            {/* Dropdown Menu */}
+            <div className="absolute top-full right-4 w-64 bg-surface border border-default rounded-lg shadow-lg z-50">
+              <div className="p-4">
+                <div className="space-y-2">
+                  {navLinks.map(({ to, label, icon: Icon }) => {
+                    const isActive = location.pathname === to;
+                    return (
+                      <Link
+                        key={to}
+                        to={to}
+                        className={`flex items-center gap-3 px-4 py-3 rounded ${
+                          isActive
+                            ? 'bg-brand-light text-brand border border-brand/20'
+                            : 'text-secondary'
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary'}`} />
+                        <span className="font-medium">{label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </header>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={toggleMobileMenu}>
-          <div
-            className="fixed right-0 top-0 h-full w-80 max-w-[80vw] bg-surface shadow-custom-xl transform transition-transform duration-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6 border-b border-subtle">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
-                  <Database className="w-6 h-6 text-inverse" />
-                </div>
-                <div>
-                  <h1 className="text-lg font-bold text-primary">Node Flow</h1>
-                  <p className="text-sm text-tertiary">Learn DSA Visually</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4">
-              <div className="space-y-2">
-                {navLinks.map(({ to, label, icon: Icon }) => {
-                  const isActive = location.pathname === to;
-                  return (
-                    <Link
-                      key={to}
-                      to={to}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? 'bg-brand-light text-brand border border-brand/20'
-                          : 'text-secondary hover:text-primary hover:bg-surface-elevated'
-                      }`}
-                    >
-                      <Icon className={`w-5 h-5 ${isActive ? 'text-brand' : 'text-tertiary'}`} />
-                      <span className="font-medium">{label}</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
